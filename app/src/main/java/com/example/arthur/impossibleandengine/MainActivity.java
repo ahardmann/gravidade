@@ -59,7 +59,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 
         //engine options
         EngineOptions engineOptions = new EngineOptions(true,
-                ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
+                ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(),
                 camera);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         engineOptions.getRenderOptions().setDithering(true);

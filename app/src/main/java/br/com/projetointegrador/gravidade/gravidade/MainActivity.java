@@ -64,14 +64,14 @@ public class MainActivity extends BaseGameActivity {
             ITexture telaInicialTexture = new BitmapTexture(this.getTextureManager(),new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
-                    return getAssets().open("inicial.png");
+                    return getAssets().open("inicial.jpg");
                 }
             });
 
             ITexture telaJogoTexture = new BitmapTexture(this.getTextureManager(),new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
-                    return getAssets().open("background.png");
+                    return getAssets().open("background.jpg");
                 }
             });
 

@@ -1,11 +1,10 @@
 .gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
+local.properties/
+.idea
 .DS_Store
-/build
-/bin
-/gen
+build/
+bin/
+gen/
 
 *.class
 

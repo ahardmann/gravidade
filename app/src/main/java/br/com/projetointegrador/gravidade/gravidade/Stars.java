@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Stars extends AnimatedSprite {
     private static Random random = new Random();
-    private static float velocidadeMin = 50;
+    private static float velocidadeMin = 30;
 
     private PhysicsHandler physicsHandler;
 
@@ -42,7 +42,7 @@ public class Stars extends AnimatedSprite {
     }
 
     public float getVelocidadeY(float velocidade) {
-        return -(this.random.nextFloat() * velocidade + velocidadeMin);
+        return -(velocidade + velocidadeMin);
     }
 
     @Override

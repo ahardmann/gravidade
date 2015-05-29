@@ -72,20 +72,21 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
                     return getAssets().open("newinicial.png");
                 }
             });
+
             this.inicialTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 486);
 
-            //logo gravidade
+            //Logo gravidade
             this.texLogo = new BitmapTextureAtlas(this.getTextureManager(),485,78, TextureOptions.DEFAULT);
             this.logoRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                     texLogo, this.getAssets(),"gravidade_marca.png",0,0,1,1);
 
-            //botao ativo
+            //Botao ativo
             texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
             this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                     texBotaoInativo, this.getAssets(), "botao_inativo.png", 0, 0, 1, 1
             );
 
-            //botao inativo
+            //Botao inativo
             texBotaoAtivo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
             this.botaoRegiaoAtivo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                     texBotaoAtivo, this.getAssets(), "botao_ativo.png", 0, 0, 1, 1
@@ -102,18 +103,15 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
     @Override
     protected Scene onCreateScene() {
-        this.inicialSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.inicialTextureRegion
-                , this.getVertexBufferObjectManager());
+        this.inicialSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.inicialTextureRegion, this.getVertexBufferObjectManager());
         inicialSprite.setWidth(CAMERA_WIDTH);
         inicialSprite.setHeight(CAMERA_HEIGHT);
         scene.attachChild(this.inicialSprite);
 
-        this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 100
-                ,this.logoRegiao,this.getVertexBufferObjectManager());
+        this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 100 ,this.logoRegiao,this.getVertexBufferObjectManager());
         scene.attachChild(this.logoSprite);
 
-        this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 300
-                ,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+        this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 300,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
             //Cria o touch dentro do botao
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent,

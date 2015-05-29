@@ -71,6 +71,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     private SensorManager mSensorGerenciador;
     private Sensor mAcelerometro;
 
+    //Parallax
+    private BitmapTextureAtlas mAutoParallaxBackgroundTexture;
+    private ITextureRegion mParallaxStars;
+
 
     //Necessário para utilização do sensor
     @Override
@@ -98,8 +102,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     public EngineOptions onCreateEngineOptions() {
         //instancia novo score, inicializa socoreService, e usa função open
         //para utilizar o banco
-        ScoreSqlite scoreSqlite = new ScoreSqlite(
-                this);
+        ScoreSqlite scoreSqlite = new ScoreSqlite(this);
         scoreService = new ScoreService(scoreSqlite);
         scoreService.open();
 
@@ -140,6 +143,14 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             });
             this.mBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture,0,0,400,900);
 
+
+
+            //Parallax
+           /* BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+            this.mAutoParallaxBackgroundTexture = new BitmapTextureAtlas(this.getTextureManager(),800, 480, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+            this.mParallaxStars = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mAutoParallaxBackgroundTexture, this, "parallax-space-stars.png", 0,0);
+            this.mAutoParallaxBackgroundTexture.load();*/
+
             //seta asteroide
             texAsteroide = new BitmapTextureAtlas(this.getTextureManager(), 36, 36, TextureOptions.DEFAULT);
             this.asteroideRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
@@ -156,10 +167,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                     texNave, this.getAssets(), "nave.png", 0, 0, 1, 1
             );
 
-            pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256,
-                    TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-            this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(
-                    Typeface.DEFAULT, Typeface.BOLD), 32, true, Color.WHITE);
+            pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+            this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32, true, Color.WHITE);
             this.mEngine.getTextureManager().loadTexture(pontuacaoTextureAtlas);
             this.mEngine.getFontManager().loadFont(pontuacaoFont);
 
@@ -178,34 +187,38 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     @Override
     protected Scene onCreateScene() {
         //criação da nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
-        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao,this.CAMERA_HEIGHT
-                ,this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
+        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao,this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
 
        //criando o background
-        this.backgroundSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.mBackgroundTextureRegion
-                , this.getVertexBufferObjectManager());
+        this.backgroundSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.mBackgroundTextureRegion, this.getVertexBufferObjectManager());
 
         backgroundSprite.setWidth(CAMERA_WIDTH);
         backgroundSprite.setHeight(CAMERA_HEIGHT);
         scene.attachChild(this.backgroundSprite);
         scene.registerTouchArea(this.backgroundSprite);
 
+       /* this.mEngine.registerUpdateHandler(new FPSLogger());
+
+        final Scene scene = new Scene();
+        final VerticalAutoParallaxBackground autoParallaxBackground = new VerticalAutoParallaxBackground(0,0,0,20);
+        final VertexBufferObjectManager vertexBufferObjectManager = this.getVertexBufferObjectManager();
+        autoParallaxBackground.attachParallaxEntity(new VerticalParallaxBackground.ParallaxEntity(5.0f, new Sprite(0, 0, this.mParallaxStars, vertexBufferObjectManager)));
+        scene.setBackground(autoParallaxBackground);*/
+
         //cria a nave antes do background,
         scene.attachChild(this.naveSprite);
         scene.registerTouchArea(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
-        for(int i =0; i < 5 ; i++) {
-            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
-                    ,this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+        for(int i = 0; i < 15 ; i++) {
+            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
             scene.attachChild(this.asteroideSprite);
         }
 
-        for(int i = 0; i < 3; i++){
+       /* for(int x = 0; x < 20; x++){
             this.starSprite = new Stars(this.starRegiao, 200f,this.CAMERA_HEIGHT ,this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
             scene.attachChild(this.starSprite);
-            i = i * 4;
-        }
+        }*/
 
         //Pontos
         recorde = scoreService.getRecorde();
@@ -243,10 +256,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             float z = event.values[2];
 
             if (naveSprite != null){
-                naveSprite.setX(naveSprite.getX() - (x * 4));
-                /*if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
-                    naveSprite.setX(naveSprite.getX() - (x - CAMERA_WIDTH));
-                }*/
+                //Com Bug
+                if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
+                    naveSprite.setX(naveSprite.getX() - (x * 4));
+                }
             }
         }
     }

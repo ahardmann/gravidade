@@ -7,8 +7,12 @@ bin/
 gen/
 andEngine/
 *.iml
-*.class
 *.xml
+*.jar
+*.class
+*.ap_
+*.aar
+*.iml
 
 # Version Control Systems:
 .svn
@@ -50,3 +54,7 @@ hs_err_pid*
 
 # Crashlytics
 res/values/com_crashlytics_export_strings.xml
+
+andEngine/andEngine.iml
+
+andEngine/build/intermediates/bundles/debug/classes.jar

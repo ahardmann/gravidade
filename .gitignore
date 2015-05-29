@@ -5,8 +5,10 @@ local.properties/
 build/
 bin/
 gen/
-
+andEngine/build/
+*.iml
 *.class
+*.xml
 
 # Version Control Systems:
 .svn

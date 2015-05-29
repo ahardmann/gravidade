@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
@@ -19,7 +18,6 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
@@ -41,17 +39,27 @@ import DB.ScoreService;
 import DB.ScoreSqlite;
 
 public class MainActivity extends SimpleBaseGameActivity implements SensorEventListener {
+    //Engine
     public static int CAMERA_WIDTH  = 480;
     public static int CAMERA_HEIGHT = 800;
     private Scene scene = new Scene();
     private Camera camera;
-    private Sprite asteroideSprite, backgroundSprite, naveSprite, starSprite;
+
+    //Imagens
+    private Sprite asteroideSprite;
+    private Sprite backgroundSprite;
+    private Sprite naveSprite;
+    private Sprite starSprite;
 
     private ITextureRegion mBackgroundTextureRegion;
-    private TiledTextureRegion naveRegiao, asteroideRegiao, starRegiao;
-    private BitmapTextureAtlas texNave, texAsteroide, texStar;
+    private TiledTextureRegion naveRegiao;
+    private TiledTextureRegion asteroideRegiao;
+    private TiledTextureRegion starRegiao;
+    private BitmapTextureAtlas texNave;
+    private BitmapTextureAtlas texAsteroide;
+    private BitmapTextureAtlas texStar;
 
-    //variaveis pro bd
+    //Potuação
     private Long recorde;
     private ScoreService scoreService;
     private Long pontos = 0L;
@@ -59,10 +67,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     private Font pontuacaoFont;
     private Text textoPontuacao;
 
-    //variavel nescesaria para movimentação
+    //Acelerometro
     private SensorManager mSensorGerenciador;
     private Sensor mAcelerometro;
-    private float mDowX, mDowY;
+
 
     //Necessário para utilização do sensor
     @Override

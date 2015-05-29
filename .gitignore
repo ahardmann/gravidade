@@ -5,7 +5,7 @@ local.properties/
 build/
 bin/
 gen/
-andEngine/build/
+andEngine/
 *.iml
 *.class
 *.xml

@@ -27,9 +27,6 @@ import org.andengine.util.debug.Debug;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Created by arthur on 27/05/2015.
- */
 public class TelaInicialActivity extends SimpleBaseGameActivity {
     public static int CAMERA_WIDTH = 480;
     public static int CAMERA_HEIGHT = 800;

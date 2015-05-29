@@ -135,7 +135,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
-                    //return getAssets().open("newbackground.png");
                     return getAssets().open("newbackground.png");
                 }
             });
@@ -146,7 +145,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             this.asteroideRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                     texAsteroide, this.getAssets(), "asteroide.png", 0, 0, 1, 1
             );
-
+            //Seta constelação
             texStar = new BitmapTextureAtlas(this.getTextureManager(),272,160, TextureOptions.DEFAULT);
             this.starRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                     texStar, this.getAssets(),"parallax-space-stars.png",0,0,1,1);
@@ -168,7 +167,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             texStar.load();
             texAsteroide.load();
             texNave.load();
-            //texBackground.load();
             backgroundTexture.load();
 
         } catch (IOException e) {
@@ -186,46 +184,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
        //criando o background
         this.backgroundSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.mBackgroundTextureRegion
                 , this.getVertexBufferObjectManager());
-        /*{
-            //metodo de movimentação, feito dentro da criação do background para riscar o backgorund pra mover
-            @Override
-            public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
-                int eventAction = pSceneTouchEvent.getAction();
-                float X = pSceneTouchEvent.getX();
-                float Y = pSceneTouchEvent.getY();
-                float meio = CAMERA_WIDTH /2;
 
-                switch (eventAction) {
-                    case TouchEvent.ACTION_DOWN:
-                        Log.e("Fudeu",X+""+Y);
-                        mDowX = X;
-                        mDowY = Y;
-                        break
-                                ;
-                    case TouchEvent.ACTION_MOVE:
-                        break;
-
-                    case TouchEvent.ACTION_UP:
-                        Log.e("Fudeu","UP "+X+""+Y);
-                        if (X+50 < mDowX ){
-                            if(naveSprite.getX() == meio){
-                                naveSprite.setX(50);
-                            }else{
-                                naveSprite.setX(meio);
-                            }
-                        }
-                        if (X+50 > mDowX ){
-                            if(naveSprite.getX() == meio){
-                                naveSprite.setX(480);
-                            }else{
-                                naveSprite.setX(meio);
-                            }
-                        }
-                        break;
-                }
-                return true;
-            }
-        };*/
         backgroundSprite.setWidth(CAMERA_WIDTH);
         backgroundSprite.setHeight(CAMERA_HEIGHT);
         scene.attachChild(this.backgroundSprite);
@@ -242,10 +201,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             scene.attachChild(this.asteroideSprite);
         }
 
-        for(int _i=0; _i < 3; _i++){
-            this.starSprite = new Stars(this.starRegiao, 200f,this.CAMERA_HEIGHT
-                    ,this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
+        for(int i = 0; i < 3; i++){
+            this.starSprite = new Stars(this.starRegiao, 200f,this.CAMERA_HEIGHT ,this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
             scene.attachChild(this.starSprite);
+            i = i * 4;
         }
 
         //Pontos

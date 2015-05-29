@@ -8,9 +8,6 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import java.util.Random;
 
-/**
- * Created by arthur on 25/05/2015.
- */
 public class Stars extends AnimatedSprite {
     private static Random random = new Random();
     private static float velocidadeMin = 50;

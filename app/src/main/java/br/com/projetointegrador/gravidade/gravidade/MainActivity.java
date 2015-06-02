@@ -18,6 +18,9 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.extension.collisions.entity.sprite.PixelPerfectAnimatedSprite;
+import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTextureRegionFactory;
+import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTiledTextureRegion;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
@@ -52,7 +55,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     private Sprite starSprite;
 
     private ITextureRegion mBackgroundTextureRegion;
-    private TiledTextureRegion naveRegiao;
+    private PixelPerfectTiledTextureRegion naveRegiao;
     private TiledTextureRegion asteroideRegiao;
     private TiledTextureRegion starRegiao;
     private BitmapTextureAtlas texNave;
@@ -106,7 +109,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scoreService = new ScoreService(scoreSqlite);
         scoreService.open();
 
-        //Captura tamanho da tela
+        /*//Captura tamanho da tela
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -125,7 +128,16 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         engineOptions.getRenderOptions().setDithering(true);
         engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        engineOptions.getTouchOptions().setNeedsMultiTouch(true);*/
+
+        //metodo que Erick pega tela
+        camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
+        EngineOptions engineOptions = new EngineOptions(true,
+                ScreenOrientation.PORTRAIT_FIXED, new
+                FillResolutionPolicy( ),
+                camera);
+
+        engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 
         return engineOptions;
     }
@@ -163,9 +175,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
             //seta nave
             texNave = new BitmapTextureAtlas(this.getTextureManager(), 64, 70, TextureOptions.DEFAULT);
-            this.naveRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
+            /*this.naveRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                     texNave, this.getAssets(), "nave.png", 0, 0, 1, 1
-            );
+            );*/
+            this.naveRegiao = PixelPerfectTextureRegionFactory.createTiledFromAsset(texNave,this.getAssets()
+                    ,"nave.png",0,0,1,1,0);
 
             pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256
                     , TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -189,7 +203,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     @Override
     protected Scene onCreateScene() {
 
-       //criando o background
+        //criando o background
         this.backgroundSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.mBackgroundTextureRegion
                 , this.getVertexBufferObjectManager());
         backgroundSprite.setWidth(CAMERA_WIDTH);
@@ -206,8 +220,8 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.setBackground(autoParallaxBackground);*/
 
         //criação da nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
-        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao,this.CAMERA_HEIGHT
-                , this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
+        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao/*,this.CAMERA_HEIGHT
+                , this.CAMERA_WIDTH*/, this.getVertexBufferObjectManager());
         scene.attachChild(this.naveSprite);
         scene.registerTouchArea(this.naveSprite);
 

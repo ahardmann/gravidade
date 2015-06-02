@@ -8,20 +8,22 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.Font;
+import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.adt.color.Color;
+import org.andengine.util.adt.io.in.IInputStreamOpener;
+import org.andengine.util.debug.Debug;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.entity.scene.Scene;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.text.Text;
-import org.andengine.extension.collisions.entity.sprite.PixelPerfectAnimatedSprite;
-import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTextureRegionFactory;
-import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTiledTextureRegion;
-import org.andengine.opengl.font.Font;
+
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -30,10 +32,9 @@ import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.ui.activity.SimpleBaseGameActivity;
-import org.andengine.util.adt.color.Color;
-import org.andengine.util.adt.io.in.IInputStreamOpener;
-import org.andengine.util.debug.Debug;
+
+import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTextureRegionFactory;
+import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTiledTextureRegion;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,34 +110,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scoreService = new ScoreService(scoreSqlite);
         scoreService.open();
 
-        /*//Captura tamanho da tela
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int height = metrics.heightPixels;
-        int width  = metrics.widthPixels;
-
-        if (CAMERA_HEIGHT < height && CAMERA_WIDTH < width) {
-            CAMERA_HEIGHT = height;
-            CAMERA_WIDTH = width;
-        }
-
-        camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-        //Engine options
-        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
-        engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-        engineOptions.getRenderOptions().setDithering(true);
-        engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-        engineOptions.getTouchOptions().setNeedsMultiTouch(true);*/
-
-        //metodo que Erick pega tela
+        //Captura Tamalho da tela
         camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
-        EngineOptions engineOptions = new EngineOptions(true,
-                ScreenOrientation.PORTRAIT_FIXED, new
-                FillResolutionPolicy( ),
-                camera);
-
+        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 
         return engineOptions;
@@ -154,8 +130,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 }
             });
             this.mBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture,0,0,400,900);
-
-
 
             //Parallax
            /* BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");

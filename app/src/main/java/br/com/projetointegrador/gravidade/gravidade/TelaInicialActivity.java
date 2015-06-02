@@ -1,7 +1,6 @@
 package br.com.projetointegrador.gravidade.gravidade;
 
 import android.content.Intent;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.andengine.engine.camera.Camera;
@@ -40,33 +39,8 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-       /* DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int height = metrics.heightPixels;
-        int width = metrics.widthPixels;
-
-        if (CAMERA_HEIGHT < height && CAMERA_WIDTH < width) {
-            CAMERA_HEIGHT = height;
-            CAMERA_WIDTH = width;
-        }
-
-        camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-        //Engine options
-        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
-        engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-        engineOptions.getRenderOptions().setDithering(true);
-        engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-*/
-        //metodo que Erick pega tela
         camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
-        EngineOptions engineOptions = new EngineOptions(true,
-                ScreenOrientation.PORTRAIT_FIXED, new
-                FillResolutionPolicy( ),
-                camera);
-
+        EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
 
         return engineOptions;

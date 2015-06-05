@@ -201,7 +201,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.registerTouchArea(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
-        for(int i = 0; i < 2 ; i++) {
+        for(int i = 0; i < 6 ; i++) {
             this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
                     , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
             scene.attachChild(this.asteroideSprite);
@@ -239,12 +239,14 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             this.scoreService.novoRecorde(recorde);
         }
         this.textoPontuacao.setText(" " + pontos *5); //+ " RECORDE: "+ recorde);
-        //adiciona um meteoro na tela a cada 10 pts
-        if ((this.pontos * 5) % 10 == 0) {
-            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
-                    , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
-            scene.attachChild(this.asteroideSprite);
-            Log.i(LOGS, "Gerou");
+        //adiciona quato meteoros na tela a cada 200 pts
+        if ((this.pontos * 5) % 200 == 0 ) {
+            for(int i =0; i < 4; i++){
+                this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
+                        , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                scene.attachChild(this.asteroideSprite);
+                Log.i(LOGS, "Gerou");
+            }
         }
     }
 
@@ -257,9 +259,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
             if (naveSprite != null){
                 //Com Bug
-               // if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
+               if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
                     naveSprite.setX(naveSprite.getX() - (x * 4));
-               // }
+               }else{
+                   naveSprite.setX(0);
+               }
             }
         }
     }

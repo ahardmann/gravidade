@@ -240,7 +240,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         }
         this.textoPontuacao.setText(" " + pontos *5); //+ " RECORDE: "+ recorde);
         //adiciona quato meteoros na tela a cada 200 pts
-        if ((this.pontos * 5) % 200 == 0 ) {
+        if ((this.pontos * 5) % 200 == 0 && (this.pontos*5) < 800) {
             for(int i =0; i < 4; i++){
                 this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
                         , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
@@ -259,11 +259,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
             if (naveSprite != null){
                 //Com Bug
-               if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
+             //  if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
                     naveSprite.setX(naveSprite.getX() - (x * 4));
-               }else{
-                   naveSprite.setX(0);
-               }
+               //}else{
+                 //  naveSprite.setX(0);
+               //}
             }
         }
     }

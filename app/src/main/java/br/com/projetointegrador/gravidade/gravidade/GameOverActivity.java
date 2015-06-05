@@ -65,28 +65,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
         @Override
         public EngineOptions onCreateEngineOptions() {
-          /*  //Captura tamanho da tela
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-            int height = metrics.heightPixels;
-            int width  = metrics.widthPixels;
-
-            if (CAMERA_HEIGHT < height && CAMERA_WIDTH < width) {
-                CAMERA_HEIGHT = height;
-                CAMERA_WIDTH = width;
-            }
-
-            camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-            //Engine options
-            EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
-            engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-            engineOptions.getRenderOptions().setDithering(true);
-            engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-            engineOptions.getTouchOptions().setNeedsMultiTouch(true);*/
-
-            //metodo que Erick pega tela
+            //metodo que pega tamanho da tela
             camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
             EngineOptions engineOptions = new EngineOptions(true,
                     ScreenOrientation.PORTRAIT_FIXED, new

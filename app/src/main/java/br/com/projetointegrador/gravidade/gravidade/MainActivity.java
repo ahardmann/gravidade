@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
@@ -200,7 +201,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.registerTouchArea(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
-        for(int i = 0; i < 10 ; i++) {
+        for(int i = 0; i < 2 ; i++) {
             this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
                     , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
             scene.attachChild(this.asteroideSprite);
@@ -231,12 +232,20 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     public void atualizaPontuacao(){
+        final  String LOGS = "logs";
         this.pontos++;
         if(this.pontos > this.recorde){
             this.recorde = this.pontos;
             this.scoreService.novoRecorde(recorde);
         }
         this.textoPontuacao.setText(" " + pontos *5); //+ " RECORDE: "+ recorde);
+        //adiciona um meteoro na tela a cada 10 pts
+        if ((this.pontos * 5) % 10 == 0) {
+            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
+                    , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+            scene.attachChild(this.asteroideSprite);
+            Log.i(LOGS, "Gerou");
+        }
     }
 
     @Override

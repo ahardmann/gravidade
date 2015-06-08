@@ -150,9 +150,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
             //seta nave
             texNave = new BitmapTextureAtlas(this.getTextureManager(), 64, 70, TextureOptions.DEFAULT);
-            /*this.naveRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                    texNave, this.getAssets(), "nave.png", 0, 0, 1, 1
-            );*/
             this.naveRegiao = PixelPerfectTextureRegionFactory.createTiledFromAsset(texNave,this.getAssets()
                     ,"nave.png",0,0,1,1,0);
 
@@ -201,7 +198,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.registerTouchArea(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
-        for(int i = 0; i < 6 ; i++) {
+        for(int i = 0; i < 4 ; i++) {
             this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
                     , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
             scene.attachChild(this.asteroideSprite);
@@ -238,9 +235,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             this.recorde = this.pontos;
             this.scoreService.novoRecorde(recorde);
         }
-        this.textoPontuacao.setText(" " + pontos *5); //+ " RECORDE: "+ recorde);
+        this.textoPontuacao.setText(" " + pontos *5);
         //adiciona quato meteoros na tela a cada 200 pts
-        if ((this.pontos * 5) % 200 == 0 && (this.pontos*5) < 800) {
+        if ((this.pontos * 5) % 200 == 0 && (this.pontos*5) < 600) {
             for(int i =0; i < 4; i++){
                 this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT
                         , this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);

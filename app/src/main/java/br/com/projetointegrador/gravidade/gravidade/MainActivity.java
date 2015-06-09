@@ -13,6 +13,7 @@ import android.util.Log;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.extension.collisions.entity.sprite.PixelPerfectAnimatedSprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.color.Color;
@@ -53,7 +54,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     //Imagens
     private Sprite asteroideSprite;
     private Sprite backgroundSprite;
-    private Sprite naveSprite;
+    private PixelPerfectAnimatedSprite naveSprite;
     private Sprite starSprite;
 
     private ITextureRegion mBackgroundTextureRegion;
@@ -192,10 +193,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.setBackground(autoParallaxBackground);*/
 
         //criação da nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
-        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao/*,this.CAMERA_HEIGHT
-                , this.CAMERA_WIDTH*/, this.getVertexBufferObjectManager());
+        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao,this.CAMERA_HEIGHT
+                , this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
         scene.attachChild(this.naveSprite);
-        scene.registerTouchArea(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
         for(int i = 0; i < 4 ; i++) {
@@ -211,7 +211,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
         //Pontos
         recorde = scoreService.getRecorde();
-        textoPontuacao = new Text(this.CAMERA_WIDTH - 100,this.CAMERA_HEIGHT - 50, this.pontuacaoFont,/*"PONTUAÇÃO: " + pontos + */" RECORDE: "+
+        textoPontuacao = new Text(this.CAMERA_WIDTH - 100,this.CAMERA_HEIGHT - 50, this.pontuacaoFont, " RECORDE: "+
                 recorde * 5 + "              " , this.getVertexBufferObjectManager());
         scene.attachChild(textoPontuacao);
 
@@ -275,9 +275,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             if (naveSprite != null){
                 //Com Bug
              //  if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
-                if(this.CAMERA_WIDTH > 0 || this.CAMERA_WIDTH < 480){
+                //if(this.CAMERA_WIDTH > 0 || this.CAMERA_WIDTH < 480){
                     naveSprite.setX(naveSprite.getX() - (x * 4));
-                }
+                //}
                //}else{
                  //  naveSprite.setX(0);
                //}

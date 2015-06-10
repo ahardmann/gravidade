@@ -274,13 +274,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
             if (naveSprite != null){
                 //Com Bug
-             //  if(naveSprite.getX() > 0 && naveSprite.getX() + naveSprite.getWidth() < CAMERA_WIDTH ){
+              if(naveSprite.getX() > CAMERA_WIDTH - 460 && naveSprite.getX() /*+ naveSprite.getWidth() */< CAMERA_WIDTH -20){
                 //if(this.CAMERA_WIDTH > 0 || this.CAMERA_WIDTH < 480){
                     naveSprite.setX(naveSprite.getX() - (x * 4));
-                //}
-               //}else{
-                 //  naveSprite.setX(0);
-               //}
+              }
             }
         }
     }

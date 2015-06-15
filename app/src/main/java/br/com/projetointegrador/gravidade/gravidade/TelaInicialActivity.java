@@ -68,7 +68,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         //Botao Inativo
         texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
         this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                texBotaoInativo, this.getAssets(), "gfx/botao_inativo.png", 0, 0, 1, 1
+                texBotaoInativo, this.getAssets(), "gfx/botao_ativo.png", 0, 0, 1, 1
         );
 
         //FontFactory.setAssetBasePath("font/");

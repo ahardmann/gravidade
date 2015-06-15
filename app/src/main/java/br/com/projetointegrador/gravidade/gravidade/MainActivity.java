@@ -222,7 +222,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         return scene;
     }
 
-    //metodo game over(não esquecer de criar o activity no AndroiManifest.xml)
+    //Método game over(não esquecer de criar o activity no AndroiManifest.xml)
     public void gameOver() {
         colisaoSom.play();
         Bundle bundle = new Bundle();
@@ -252,28 +252,31 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 6");
                 }
-                break;
+            break;
+
             case 200:
                 for(i = 0; i < 8; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 8");
                 }
-                break;
+            break;
+
             case 400:
                 for(i = 0; i < 10; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 10");
                 }
-                break;
+            break;
+
             case 800:
                 for(i = 0; i < 12; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 12");
                 }
-                break;
+            break;
         }
     }
 

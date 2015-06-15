@@ -1,7 +1,6 @@
 package br.com.projetointegrador.gravidade.gravidade;
 
 import android.content.Intent;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.andengine.engine.camera.Camera;
@@ -22,7 +21,6 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
-import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,65 +38,49 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int height = metrics.heightPixels;
-        int width = metrics.widthPixels;
-
-        if (CAMERA_HEIGHT < height && CAMERA_WIDTH < width) {
-            CAMERA_HEIGHT = height;
-            CAMERA_WIDTH = width;
-        }
-
-        camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-        //Engine options
+        camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-        engineOptions.getRenderOptions().setDithering(true);
-        engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 
         return engineOptions;
     }
 
+    private void loadGraphics() throws IOException{
+        ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
+            @Override
+            public InputStream open() throws IOException {
+                return getAssets().open("gfx/newinicial.png");
+            }
+        });
+
+        this.inicialTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 486);
+
+        //Logo gravidade
+        this.texLogo = new BitmapTextureAtlas(this.getTextureManager(),485,78, TextureOptions.DEFAULT);
+        this.logoRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
+                texLogo, this.getAssets(),"gfx/gravidade_marca.png",0,0,1,1);
+
+        //Botao inativo
+        texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
+        this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
+                texBotaoInativo, this.getAssets(), "gfx/botao_inativo.png", 0, 0, 1, 1
+        );
+
+        //Botao ativo
+        texBotaoAtivo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
+        this.botaoRegiaoAtivo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
+                texBotaoAtivo, this.getAssets(), "gfx/botao_ativo.png", 0, 0, 1, 1
+        );
+
+        texBotaoAtivo.load();
+        texBotaoInativo.load();
+        texLogo.load();
+        backgroundTexture.load();
+    }
+
     @Override
     protected void onCreateResources() throws IOException {
-        try {
-            ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                @Override
-                public InputStream open() throws IOException {
-                    return getAssets().open("newinicial.png");
-                }
-            });
-
-            this.inicialTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 486);
-
-            //Logo gravidade
-            this.texLogo = new BitmapTextureAtlas(this.getTextureManager(),485,78, TextureOptions.DEFAULT);
-            this.logoRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                    texLogo, this.getAssets(),"gravidade_marca.png",0,0,1,1);
-
-            //Botao ativo
-            texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
-            this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                    texBotaoInativo, this.getAssets(), "botao_inativo.png", 0, 0, 1, 1
-            );
-
-            //Botao inativo
-            texBotaoAtivo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
-            this.botaoRegiaoAtivo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                    texBotaoAtivo, this.getAssets(), "botao_ativo.png", 0, 0, 1, 1
-            );
-
-            texBotaoAtivo.load();
-            texBotaoInativo.load();
-            texLogo.load();
-            backgroundTexture.load();
-        } catch (IOException e) {
-            Debug.e(e);
-        }
+        loadGraphics();
     }
 
     @Override
@@ -114,8 +96,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 300,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
             //Cria o touch dentro do botao
             @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                         float pTouchAreaLocalX, float pTouchAreaLocalY) {
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 int eventAction = pSceneTouchEvent.getAction();
                 float X = pSceneTouchEvent.getX();
                 float Y = pSceneTouchEvent.getY();
@@ -126,10 +107,8 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
                         mDowX = X;
                         mDowY = Y;
                         break;
-
                     case TouchEvent.ACTION_MOVE:
                         break;
-
                     case TouchEvent.ACTION_UP:
                         Log.e("Fudeu","UP "+X+""+Y);
                         startMainActivity();

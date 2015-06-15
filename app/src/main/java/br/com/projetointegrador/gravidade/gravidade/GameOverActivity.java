@@ -3,7 +3,6 @@ package br.com.projetointegrador.gravidade.gravidade;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import org.andengine.engine.camera.Camera;
@@ -27,7 +26,6 @@ import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
-import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,61 +63,43 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
         @Override
         public EngineOptions onCreateEngineOptions() {
-            //Captura tamanho da tela
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-            int height = metrics.heightPixels;
-            int width  = metrics.widthPixels;
-
-            if (CAMERA_HEIGHT < height && CAMERA_WIDTH < width) {
-                CAMERA_HEIGHT = height;
-                CAMERA_WIDTH = width;
-            }
-
-            camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-
-            //Engine options
+            camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
             EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
             engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-            engineOptions.getRenderOptions().setDithering(true);
-            engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-            engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-
             return engineOptions;
         }
 
+
+
+        private void loadGraphics() throws IOException {
+            ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
+                @Override
+                public InputStream open() throws IOException {
+                    return getAssets().open("gfx/newgameover.png");
+                }
+            });
+
+            this.GameOverTextureRegion= TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 494);
+
+            texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
+            this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBotaoInativo, this.getAssets(), "gfx/botao_inativo.png", 0, 0, 1, 1);
+
+            pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+            this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 35, true, Color.WHITE);
+            this.mEngine.getTextureManager().loadTexture(pontuacaoTextureAtlas);
+            this.mEngine.getFontManager().loadFont(pontuacaoFont);
+
+            texBotaoInativo.load();
+            backgroundTexture.load();
+        }
+
+
+
         @Override
         protected void onCreateResources() throws IOException {
-           try{
-               ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                   @Override
-                   public InputStream open() throws IOException {
-                       return getAssets().open("newgameover.png");
-                   }
-               });
-
-               this.GameOverTextureRegion= TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 494);
-
-               texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
-               this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                       texBotaoInativo, this.getAssets(), "botao_inativo.png", 0, 0, 1, 1
-               );
-
-               pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256,
-                       TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-               this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(
-                       Typeface.DEFAULT, Typeface.BOLD), 35, true, Color.WHITE);
-               this.mEngine.getTextureManager().loadTexture(pontuacaoTextureAtlas);
-               this.mEngine.getFontManager().loadFont(pontuacaoFont);
-
-               texBotaoInativo.load();
-               backgroundTexture.load();
-           }catch (IOException e) {
-               Debug.e(e);
-           }
-
+            loadGraphics();
         }
+
 
         @Override
         protected Scene onCreateScene() {
@@ -128,12 +108,10 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             GameOverSprite.setHeight(CAMERA_HEIGHT);
             scene.attachChild(this.GameOverSprite);
 
-            this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 400
-                    ,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+            this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 400, this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
                 //Cria o touch dentro do botao
                 @Override
-                public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-                                             float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                     int eventAction = pSceneTouchEvent.getAction();
                     float X = pSceneTouchEvent.getX();
                     float Y = pSceneTouchEvent.getY();
@@ -144,10 +122,8 @@ public class GameOverActivity extends SimpleBaseGameActivity{
                             mDowX = X;
                             mDowY = Y;
                             break;
-
                         case TouchEvent.ACTION_MOVE:
                             break;
-
                         case TouchEvent.ACTION_UP:
                             Log.e("Fudeu","UP "+X+""+Y);
                             restartMainActivity();
@@ -161,12 +137,9 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
             // Pontos
             String textoPontos = "Pontuação: " + pontos + " / Recorde: " + recorde;
-            float centroXpontos = (this.CAMERA_WIDTH / 2);/* - (this.pontuacaoFont
-                    .getStringWidth(textoPontos) / 2);*/
-            float centroYpontos = (this.CAMERA_HEIGHT - 100) - (this.pontuacaoFont
-                    .getLineHeight() / 2);
-            textoPontuacao = new Text(centroXpontos, centroYpontos,
-                    this.pontuacaoFont, textoPontos, this.getVertexBufferObjectManager());
+            float centroXpontos = (this.CAMERA_WIDTH / 2);
+            float centroYpontos = (this.CAMERA_HEIGHT - 100) - (this.pontuacaoFont.getLineHeight() / 2);
+            textoPontuacao = new Text(centroXpontos, centroYpontos, this.pontuacaoFont, textoPontos, this.getVertexBufferObjectManager());
             scene.attachChild(textoPontuacao);
 
             return scene;

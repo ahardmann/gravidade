@@ -47,7 +47,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         private Font pontuacaoFont;
         private Text textoPontuacao;
 
-        private Sprite botaoInativoSprite;
+        private Sprite botaoInativoSprite, botaoSairSprite;
         private BitmapTextureAtlas texBotaoInativo, mFontTexture;
         private TiledTextureRegion botaoRegiaoInativo;
         private float mDowX, mDowY;
@@ -146,6 +146,36 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             scene.attachChild(this.botaoInativoSprite);
             scene.attachChild(text);
             scene.registerTouchArea(this.botaoInativoSprite);
+
+            Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Sair",this.getVertexBufferObjectManager());
+            this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+
+                //Cria o touch dentro do botao
+                @Override
+                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                    int eventAction = pSceneTouchEvent.getAction();
+                    float X = pSceneTouchEvent.getX();
+                    float Y = pSceneTouchEvent.getY();
+
+                    switch (eventAction) {
+                        case TouchEvent.ACTION_DOWN:
+                            Log.e("Fudeu",X+""+Y);
+                            mDowX = X;
+                            mDowY = Y;
+                            break;
+                        case TouchEvent.ACTION_MOVE:
+                            break;
+                        case TouchEvent.ACTION_UP:
+                            Log.e("Fudeu","UP "+X+""+Y);
+                            finish();
+                            break;
+                    }
+                    return true;
+                }
+            };
+            scene.attachChild(this.botaoSairSprite);
+            scene.attachChild(textsair);
+            scene.registerTouchArea(this.botaoSairSprite);
 
             // Pontos
             String textoPontos = "Pontuação: " + pontos + " / Recorde: " + recorde;

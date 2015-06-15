@@ -34,7 +34,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
     public static int CAMERA_HEIGHT = 800;
     private Scene scene = new Scene();
     private Camera camera;
-    private Sprite inicialSprite, logoSprite, botaoSairSprite, botaoInativoSprite;
+    private Sprite inicialSprite, logoSprite, botaoSairSprite, botaoInativoSprite, botaoConfgSprite;
     private ITextureRegion inicialTextureRegion;
     private BitmapTextureAtlas texBotaoInativo, texBotaoAtivo, texLogo, mFontTexture;
     private TiledTextureRegion botaoRegiaoAtivo, botaoRegiaoInativo, logoRegiao;
@@ -73,7 +73,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
         //FontFactory.setAssetBasePath("font/");
         this.mFontTexture = new BitmapTextureAtlas(mEngine.getTextureManager(), 256, 256);
-        this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 48, true, Color.WHITE_ABGR_PACKED_INT);
+        this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 32, true, Color.WHITE_ABGR_PACKED_INT);
         this.mFont.load();
         this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
         this.mEngine.getFontManager().loadFont(this.mFont);
@@ -103,10 +103,10 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         inicialSprite.setHeight(CAMERA_HEIGHT);
         scene.attachChild(this.inicialSprite);
 
-        this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 100 ,this.logoRegiao,this.getVertexBufferObjectManager());
+        this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 150 ,this.logoRegiao,this.getVertexBufferObjectManager());
         scene.attachChild(this.logoSprite);
-        Text text = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 300 ,mFont,"Jogar",this.getVertexBufferObjectManager());
-        this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 300,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+        Text text = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 400 ,mFont,"Jogar",this.getVertexBufferObjectManager());
+        this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 400,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
             //Cria o touch dentro do botao
             @Override
@@ -135,6 +135,36 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         scene.attachChild(this.botaoInativoSprite);
         scene.attachChild(text);
         scene.registerTouchArea(this.botaoInativoSprite);
+
+        Text textconfg = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Configurações",this.getVertexBufferObjectManager());
+        this.botaoConfgSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 500,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+
+            //Cria o touch dentro do botao
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                int eventAction = pSceneTouchEvent.getAction();
+                float X = pSceneTouchEvent.getX();
+                float Y = pSceneTouchEvent.getY();
+
+                switch (eventAction) {
+                    case TouchEvent.ACTION_DOWN:
+                        Log.e("Fudeu",X+""+Y);
+                        mDowX = X;
+                        mDowY = Y;
+                        break;
+                    case TouchEvent.ACTION_MOVE:
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        Log.e("Fudeu","UP "+X+""+Y);
+                        finish();
+                        break;
+                }
+                return true;
+            }
+        };
+        scene.attachChild(this.botaoConfgSprite);
+        scene.attachChild(textconfg);
+        scene.registerTouchArea(this.botaoConfgSprite);
 
         Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Sair",this.getVertexBufferObjectManager());
         this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
@@ -166,10 +196,8 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         scene.attachChild(textsair);
         scene.registerTouchArea(this.botaoSairSprite);
 
-
         return scene;
     }
-
     //Metodo pra iniciar o MainActivity
     private void startMainActivity(){
         Intent playGame = new Intent(this, MainActivity.class);

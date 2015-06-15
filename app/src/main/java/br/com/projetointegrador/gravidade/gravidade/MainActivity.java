@@ -77,8 +77,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     private Music musica;
     private Sound colisaoSom;
 
-
-
     //Necessário para utilização do sensor
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
@@ -103,19 +101,20 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        //instancia novo score, inicializa socoreService, e usa função open para utilizar o banco
+        //Instancia novo score, inicializa socoreService, e usa função open para utilizar o banco
         ScoreSqlite scoreSqlite = new ScoreSqlite(this);
         scoreService = new ScoreService(scoreSqlite);
         scoreService.open();
 
         //Captura Tamalho da tela
         camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
+
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
 
         engineOptions.getAudioOptions().setNeedsMusic(true);
         engineOptions.getAudioOptions().setNeedsSound(true);
-
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
+
         return engineOptions;
     }
 
@@ -168,7 +167,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             texStar.load();
             texAsteroide.load();
             texNave.load();
-//            backgroundTexture.load();
+            //backgroundTexture.load();
     }
 
     @Override
@@ -176,7 +175,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         loadGraphics();
         //loadFonts();
         loadSounds();
-
     }
 
     private void startMusic() {
@@ -245,11 +243,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         this.textoPontuacao.setText(" " + pontos *5);
 
         int dificuldade = (int) (this.pontos * 5);
-        int i = 0;
+        int i;
 
         switch (dificuldade){
             case 50:
-                for(i =0; i < 6; i++){
+                for(i = 0; i < 6; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 6");
@@ -277,15 +275,12 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 }
                 break;
         }
-
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
 
             if (naveSprite != null){
                 //Com Bug

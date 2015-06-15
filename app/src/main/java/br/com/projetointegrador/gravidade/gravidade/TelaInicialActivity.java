@@ -10,7 +10,10 @@ import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -20,6 +23,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 
 import java.io.IOException;
@@ -32,9 +36,11 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
     private Camera camera;
     private Sprite inicialSprite, logoSprite, botaoAtivoSprite, botaoInativoSprite;
     private ITextureRegion inicialTextureRegion;
-    private BitmapTextureAtlas texBotaoInativo, texBotaoAtivo, texLogo;
+    private BitmapTextureAtlas texBotaoInativo, texBotaoAtivo, texLogo, mFontTexture;
     private TiledTextureRegion botaoRegiaoAtivo, botaoRegiaoInativo, logoRegiao;
     private float mDowX, mDowY;
+    private Font mFont;
+
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -55,18 +61,25 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
         this.inicialTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 486);
 
-        //Logo gravidade
+        //Logo Gravidade
         this.texLogo = new BitmapTextureAtlas(this.getTextureManager(),485,78, TextureOptions.DEFAULT);
-        this.logoRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                texLogo, this.getAssets(),"gfx/gravidade_marca.png",0,0,1,1);
+        this.logoRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texLogo, this.getAssets(),"gfx/gravidade_marca.png",0,0,1,1);
 
-        //Botao inativo
+        //Botao Inativo
         texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
         this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                 texBotaoInativo, this.getAssets(), "gfx/botao_inativo.png", 0, 0, 1, 1
         );
 
-        //Botao ativo
+        //FontFactory.setAssetBasePath("font/");
+        this.mFontTexture = new BitmapTextureAtlas(mEngine.getTextureManager(), 256, 256);
+        this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 48, true, Color.WHITE_ABGR_PACKED_INT);
+        this.mFont.load();
+        this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+        this.mEngine.getFontManager().loadFont(this.mFont);
+
+
+        //Botao Ativo
         texBotaoAtivo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
         this.botaoRegiaoAtivo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
                 texBotaoAtivo, this.getAssets(), "gfx/botao_ativo.png", 0, 0, 1, 1
@@ -92,8 +105,9 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
         this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 100 ,this.logoRegiao,this.getVertexBufferObjectManager());
         scene.attachChild(this.logoSprite);
-
+        Text text = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 300 ,mFont,"Jogar",this.getVertexBufferObjectManager());
         this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 300,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+
             //Cria o touch dentro do botao
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -118,6 +132,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
             }
         };
         scene.attachChild(this.botaoInativoSprite);
+        scene.attachChild(text);
         scene.registerTouchArea(this.botaoInativoSprite);
 
         return scene;

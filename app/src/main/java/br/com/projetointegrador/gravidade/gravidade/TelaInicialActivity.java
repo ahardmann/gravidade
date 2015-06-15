@@ -11,6 +11,7 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -33,11 +34,12 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
     public static int CAMERA_WIDTH = 480;
     public static int CAMERA_HEIGHT = 800;
     private Scene scene = new Scene();
+    private Scene mSceneSobre = new Scene();
     private Camera camera;
-    private Sprite inicialSprite, logoSprite, botaoSairSprite, botaoInativoSprite, botaoConfgSprite;
+    private Sprite inicialSprite, logoSprite, botaoSairSprite, botaoInativoSprite, botaoConfgSprite, botaoVoltarSprite;
     private ITextureRegion inicialTextureRegion;
     private BitmapTextureAtlas texBotaoInativo, texBotaoAtivo, texLogo, mFontTexture;
-    private TiledTextureRegion botaoRegiaoAtivo, botaoRegiaoInativo, logoRegiao;
+    private TiledTextureRegion botaoRegiaoInativo, logoRegiao;
     private float mDowX, mDowY;
     private Font mFont;
 
@@ -73,19 +75,11 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
         //FontFactory.setAssetBasePath("font/");
         this.mFontTexture = new BitmapTextureAtlas(mEngine.getTextureManager(), 256, 256);
-        this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 32, true, Color.WHITE_ABGR_PACKED_INT);
+        this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 20, true, Color.WHITE_ABGR_PACKED_INT);
         this.mFont.load();
         this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
         this.mEngine.getFontManager().loadFont(this.mFont);
 
-
-        //Botao Ativo
-        texBotaoAtivo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
-        this.botaoRegiaoAtivo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(
-                texBotaoAtivo, this.getAssets(), "gfx/botao_ativo.png", 0, 0, 1, 1
-        );
-
-        texBotaoAtivo.load();
         texBotaoInativo.load();
         texLogo.load();
         backgroundTexture.load();
@@ -106,6 +100,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 150 ,this.logoRegiao,this.getVertexBufferObjectManager());
         scene.attachChild(this.logoSprite);
         Text text = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 400 ,mFont,"Jogar",this.getVertexBufferObjectManager());
+        text.setScale(2.f);
         this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 400,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
             //Cria o touch dentro do botao
@@ -136,7 +131,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         scene.attachChild(text);
         scene.registerTouchArea(this.botaoInativoSprite);
 
-        Text textconfg = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Configurações",this.getVertexBufferObjectManager());
+        Text textconfg = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Sobre",this.getVertexBufferObjectManager());
         this.botaoConfgSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 500,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
             //Cria o touch dentro do botao
@@ -156,7 +151,8 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
                         break;
                     case TouchEvent.ACTION_UP:
                         Log.e("Fudeu","UP "+X+""+Y);
-                        finish();
+                        createSobre();
+                        mEngine.setScene(mSceneSobre);
                         break;
                 }
                 return true;
@@ -198,6 +194,54 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
         return scene;
     }
+
+    protected void createSobre() {
+        mEngine.registerUpdateHandler(new FPSLogger());
+
+        this.inicialSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.inicialTextureRegion, this.getVertexBufferObjectManager());
+        inicialSprite.setWidth(CAMERA_WIDTH);
+        inicialSprite.setHeight(CAMERA_HEIGHT);
+        mSceneSobre.attachChild(this.inicialSprite);
+
+        this.logoSprite= new Sprite (this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 100 ,this.logoRegiao,this.getVertexBufferObjectManager());
+        mSceneSobre.attachChild(this.logoSprite);
+
+        Text textCriado = new Text(CAMERA_WIDTH /2, CAMERA_HEIGHT - 200, mFont, "Desenvolvido por:\n\t Arthur Hardmann \n\t " +
+               " https://github.com/ahardmann \n\t" + "Marcus Vinicius \n\t  https://github.com/mvfsilva" ,getVertexBufferObjectManager());
+        mSceneSobre.attachChild(textCriado);
+
+        Text textvoltar = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Voltar",this.getVertexBufferObjectManager());
+        this.botaoVoltarSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+
+            //Cria o touch dentro do botao
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                int eventAction = pSceneTouchEvent.getAction();
+                float X = pSceneTouchEvent.getX();
+                float Y = pSceneTouchEvent.getY();
+
+                switch (eventAction) {
+                    case TouchEvent.ACTION_DOWN:
+                        Log.e("Fudeu",X+""+Y);
+                        mDowX = X;
+                        mDowY = Y;
+                        break;
+                    case TouchEvent.ACTION_MOVE:
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        Log.e("Fudeu","UP "+X+""+Y);
+                        onCreateScene();
+                        mEngine.setScene(scene);
+                        break;
+                }
+                return true;
+            }
+        };
+        mSceneSobre.attachChild(this.botaoVoltarSprite);
+        mSceneSobre.attachChild(textvoltar);
+        mSceneSobre.registerTouchArea(this.botaoVoltarSprite);
+    }
+
     //Metodo pra iniciar o MainActivity
     private void startMainActivity(){
         Intent playGame = new Intent(this, MainActivity.class);

@@ -5,8 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.andengine.audio.sound.Sound;
-import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -53,9 +51,6 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         private TiledTextureRegion botaoRegiaoInativo;
         private float mDowX, mDowY;
 
-        //Som
-        private Sound colisao;
-
         @Override
         protected void onCreate(Bundle pSavedInstanceState) {
             if (this.getIntent() != null && this.getIntent().getExtras() != null) {
@@ -70,32 +65,24 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         public EngineOptions onCreateEngineOptions() {
             camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
             EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
-            engineOptions.getAudioOptions().setNeedsMusic(true);
-            engineOptions.getAudioOptions().setNeedsSound(true);
             engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
             return engineOptions;
         }
 
-        private void loadSounds(){
-            try{
-                colisao = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "sfx/colisao.ogg");
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
+
 
         private void loadGraphics() throws IOException {
             ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
                 @Override
                 public InputStream open() throws IOException {
-                    return getAssets().open("newgameover.png");
+                    return getAssets().open("gfx/newgameover.png");
                 }
             });
 
             this.GameOverTextureRegion= TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 494);
 
             texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
-            this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBotaoInativo, this.getAssets(), "botao_inativo.png", 0, 0, 1, 1);
+            this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBotaoInativo, this.getAssets(), "gfx/botao_inativo.png", 0, 0, 1, 1);
 
             pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 35, true, Color.WHITE);
@@ -113,14 +100,6 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             loadGraphics();
         }
 
-
-        private void startSound(){
-            colisao.play();
-            colisao.setLooping(false);
-
-            mEngine.getSoundManager().setMasterVolume(2);
-            mEngine.getMusicManager().setMasterVolume(2);
-        }
 
         @Override
         protected Scene onCreateScene() {

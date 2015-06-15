@@ -2,8 +2,6 @@ package br.com.projetointegrador.gravidade.gravidade;
 
 import android.util.Log;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.sound.Sound;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.collisions.entity.sprite.PixelPerfectAnimatedSprite;
@@ -28,15 +26,6 @@ public class Asteroide extends AnimatedSprite {
     private PixelPerfectAnimatedSprite nave;
     private MainActivity activity;
 
-    //Música
-    private Music musica;
-
-    //Som
-    private Sound colisao;
-
-    public void onLoadComplete(){
-        colisao.play();
-    }
 
     //Método construtor Asteroide
     public Asteroide(TiledTextureRegion pTiledTextureRegion, float pVelocidade, int largura, int altura

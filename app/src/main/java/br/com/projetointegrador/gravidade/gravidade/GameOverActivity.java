@@ -15,6 +15,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -47,9 +48,10 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         private Text textoPontuacao;
 
         private Sprite botaoInativoSprite;
-        private BitmapTextureAtlas texBotaoInativo;
+        private BitmapTextureAtlas texBotaoInativo, mFontTexture;
         private TiledTextureRegion botaoRegiaoInativo;
         private float mDowX, mDowY;
+        private Font mFont;
 
         @Override
         protected void onCreate(Bundle pSavedInstanceState) {
@@ -79,10 +81,17 @@ public class GameOverActivity extends SimpleBaseGameActivity{
                 }
             });
 
+            //FontFactory.setAssetBasePath("font/");
+            this.mFontTexture = new BitmapTextureAtlas(mEngine.getTextureManager(), 256, 256);
+            this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 24, true, Color.WHITE_ABGR_PACKED_INT);
+            this.mFont.load();
+            this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
+            this.mEngine.getFontManager().loadFont(this.mFont);
+
             this.GameOverTextureRegion= TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 494);
 
             texBotaoInativo = new BitmapTextureAtlas(this.getTextureManager(),342,64, TextureOptions.DEFAULT);
-            this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBotaoInativo, this.getAssets(), "gfx/botao_inativo.png", 0, 0, 1, 1);
+            this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBotaoInativo, this.getAssets(), "gfx/botao_ativo.png", 0, 0, 1, 1);
 
             pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
             this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 35, true, Color.WHITE);
@@ -107,6 +116,8 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             GameOverSprite.setWidth(CAMERA_WIDTH);
             GameOverSprite.setHeight(CAMERA_HEIGHT);
             scene.attachChild(this.GameOverSprite);
+
+            Text text = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 400 ,mFont,"Jogar Novamente",this.getVertexBufferObjectManager());
 
             this.botaoInativoSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 400, this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
                 //Cria o touch dentro do botao
@@ -133,6 +144,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
                 }
             };
             scene.attachChild(this.botaoInativoSprite);
+            scene.attachChild(text);
             scene.registerTouchArea(this.botaoInativoSprite);
 
             // Pontos

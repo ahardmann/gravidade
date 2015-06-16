@@ -45,11 +45,11 @@ public class Asteroide extends AnimatedSprite {
         this.activity = pActivity;
 
         this.physicsHandler.setVelocity(this.velocidadeX, this.velocidadeY);
-        this.setPosition(getPosicaoInicial(), MainActivity.CAMERA_HEIGHT);
+        this.setPosition(getPosicaoInicial(), altura);
     }
 
     public float getPosicaoInicial(){
-        return this.random.nextFloat() * MainActivity.CAMERA_WIDTH;
+        return this.random.nextFloat() * pLarguraTela;
     }
 
     //Método que gera asteroides em pontos diferentes
@@ -63,7 +63,7 @@ public class Asteroide extends AnimatedSprite {
         final  String LOGS = "logs";
         //mY = posição Y
         if(this.mY < 0) {
-            this.setPosition(getPosicaoInicial(), MainActivity.CAMERA_HEIGHT);
+            this.setPosition(getPosicaoInicial(), pAlturaTela);
             //att pontuação qdo asteroide chega no fim
             this.activity.atualizaPontuacao();
         }

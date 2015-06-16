@@ -33,11 +33,11 @@ public class Stars extends AnimatedSprite {
         this.velocidadeY = getVelocidadeY(pVelocidade);
 
         this.physicsHandler.setVelocity(this.velocidadeX, this.velocidadeY);
-        this.setPosition(getPosicaoInicial(), MainActivity.CAMERA_HEIGHT);
+        this.setPosition(getPosicaoInicial(), altura);
     }
 
     public float getPosicaoInicial(){
-        return this.random.nextFloat() * MainActivity.CAMERA_WIDTH;
+        return this.random.nextFloat() * pLarguraTela;
         //return MainActivity.CAMERA_WIDTH /2 * MainActivity.CAMERA_WIDTH;
     }
 
@@ -50,7 +50,7 @@ public class Stars extends AnimatedSprite {
         final  String LOGS = "logs";
         //mY = posição Y
         if(this.mY < 0) {
-            this.setPosition(getPosicaoInicial(), MainActivity.CAMERA_HEIGHT);
+            this.setPosition(getPosicaoInicial(), pAlturaTela);
         }
         super.onManagedUpdate(pSecondsElapsed);
     }

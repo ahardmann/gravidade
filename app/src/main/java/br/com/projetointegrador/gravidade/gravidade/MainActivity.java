@@ -1,14 +1,19 @@
 package br.com.projetointegrador.gravidade.gravidade;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -75,12 +80,30 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     private Music musica;
     private Sound colisaoSom;
 
+    private int width;
+    private int height;
+
     //Necessário para utilização do sensor
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         mSensorGerenciador = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAcelerometro = mSensorGerenciador.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        Point size = new Point();
+        WindowManager w = getWindowManager();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)    {
+            w.getDefaultDisplay().getSize(size);
+            width = size.x;
+            height = size.y;
+        }else{
+            Display d = w.getDefaultDisplay();
+            width = d.getWidth();
+            height = d.getHeight();
+        }
+
     }
 
     //Método necessário para utilização do sensor
@@ -97,6 +120,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         mSensorGerenciador.unregisterListener(this);
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
     public EngineOptions onCreateEngineOptions() {
         //Instancia novo score, inicializa socoreService, e usa função open para utilizar o banco
@@ -104,8 +128,20 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scoreService = new ScoreService(scoreSqlite);
         scoreService.open();
 
+        Point size = new Point();
+        WindowManager w = getWindowManager();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)    {
+            w.getDefaultDisplay().getSize(size);
+            width = size.x;
+            height = size.y;
+        }else{
+            Display d = w.getDefaultDisplay();
+            width = d.getWidth();
+            height = d.getHeight();
+        }
+
         //Captura Tamalho da tela
-        camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
+        camera = new Camera(0 , 0,width, height);
 
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
 
@@ -117,7 +153,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     //Carrega os sons do jogo
-   private void loadSounds() {
+    private void loadSounds() {
         try {
             musica = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "sfx/inicio_game.ogg");
             colisaoSom = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "sfx/colisao.ogg");
@@ -132,33 +168,32 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     private void loadGraphics() throws IOException {
-            //seta asteroide
-            texAsteroide = new BitmapTextureAtlas(this.getTextureManager(), 36, 36, TextureOptions.DEFAULT);
-            this.asteroideRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texAsteroide, this.getAssets(), "gfx/asteroide.png", 0, 0, 1, 1);
+        //seta asteroide
+        texAsteroide = new BitmapTextureAtlas(this.getTextureManager(), 36, 36, TextureOptions.DEFAULT);
+        this.asteroideRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texAsteroide, this.getAssets(), "gfx/asteroide.png", 0, 0, 1, 1);
 
-            //Seta constelação
-            texStar = new BitmapTextureAtlas(this.getTextureManager(),272,160, TextureOptions.DEFAULT);
-            this.starRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texStar, this.getAssets(),"gfx/parallax-space-stars.png",0,0,1,1);
+        //Seta constelação
+        texStar = new BitmapTextureAtlas(this.getTextureManager(),272,160, TextureOptions.DEFAULT);
+        this.starRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texStar, this.getAssets(),"gfx/parallax-space-stars.png",0,0,1,1);
 
-            //seta nave
-            texNave = new BitmapTextureAtlas(this.getTextureManager(), 64, 70, TextureOptions.DEFAULT);
-            this.naveRegiao = PixelPerfectTextureRegionFactory.createTiledFromAsset(texNave, this.getAssets(), "gfx/nave.png", 0, 0, 1, 1, 0);
+        //seta nave
+        texNave = new BitmapTextureAtlas(this.getTextureManager(), 64, 70, TextureOptions.DEFAULT);
+        this.naveRegiao = PixelPerfectTextureRegionFactory.createTiledFromAsset(texNave, this.getAssets(), "gfx/nave.png", 0, 0, 1, 1, 0);
 
-            pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-            this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32, true, Color.WHITE);
-            this.mEngine.getTextureManager().loadTexture(pontuacaoTextureAtlas);
-            this.mEngine.getFontManager().loadFont(pontuacaoFont);
+        pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32, true, Color.WHITE);
+        this.mEngine.getTextureManager().loadTexture(pontuacaoTextureAtlas);
+        this.mEngine.getFontManager().loadFont(pontuacaoFont);
 
-            //Carrega as texturas
-            texStar.load();
-            texAsteroide.load();
-            texNave.load();
+        //Carrega as texturas
+        texStar.load();
+        texAsteroide.load();
+        texNave.load();
     }
 
     @Override
     protected void onCreateResources() throws IOException {
         loadGraphics();
-
         //loadFonts();
         loadSounds();
     }
@@ -187,23 +222,24 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.setBackground(new Background(0, 0, 0));
 
         //Criando nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
-        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/8,naveRegiao,this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
+        this.naveSprite = new Nave(width/2,height/8,naveRegiao,this.width, this.height, this.getVertexBufferObjectManager());
+        //this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/8,naveRegiao,this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
         scene.attachChild(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
-        for(int i = 0; i < 4 ; i++) {
-            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+        for(int i = 0; i < 5 ; i++) {
+            //this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,CAMERA_WIDTH, CAMERA_HEIGHT, this.getVertexBufferObjectManager(),this.naveSprite,this);
+            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
             scene.attachChild(this.asteroideSprite);
         }
 
         for(int x = 0; x < 60; x++){
-            this.starSprite = new Stars(this.starRegiao, 300f,this.CAMERA_HEIGHT ,this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
+            this.starSprite = new Stars(this.starRegiao, 300f,width ,height, this.getVertexBufferObjectManager());
             scene.attachChild(this.starSprite);
         }
-
         //Pontos
         recorde = scoreService.getRecorde();
-        textoPontuacao = new Text(this.CAMERA_WIDTH - 100,this.CAMERA_HEIGHT - 50, this.pontuacaoFont, " RECORDE: " + recorde * 5 + "              " , this.getVertexBufferObjectManager());
+        textoPontuacao = new Text(this.width - 100,this.height - 50, this.pontuacaoFont, " RECORDE: " + recorde * 5 + "              " , this.getVertexBufferObjectManager());
         scene.attachChild(textoPontuacao);
 
         return scene;
@@ -236,35 +272,35 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         switch (dificuldade){
             case 50:
                 for(i = 0; i < 2; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 2");
                 }
-            break;
+                break;
 
             case 200:
                 for(i = 0; i < 4; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 4");
                 }
-            break;
+                break;
 
             case 400:
-                for(i = 0; i < 6; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                for(i = 0; i < 6; i++) {
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 6");
                 }
-            break;
+                break;
 
             case 800:
                 for(i = 0; i < 8; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 8");
                 }
-            break;
+                break;
         }
     }
 
@@ -277,15 +313,21 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             if (naveSprite != null){
 
                 float nextX = naveSprite.getX() - (x * 2);
+                float halfnave = naveSprite.getWidth()/2;
 
-                if(naveSprite.getX() < 0) {
+                if( nextX>halfnave && nextX < width -halfnave  ){
+                    naveSprite.setX(nextX);
+                    Log.i("getX:", String.valueOf(naveSprite.getX()));
+                }
+
+               /* if(naveSprite.getX() < 0) {
                     naveSprite.setX(0);
                 }else if(naveSprite.getX() + naveSprite.getWidth() > CAMERA_WIDTH) {
                     naveSprite.setX((CAMERA_WIDTH - 5) - naveSprite.getWidth());
                 }else{
                     naveSprite.setX(nextX);
                     Log.i("getX:", String.valueOf(naveSprite.getX()));
-                }
+                }*/
             }
         }
     }

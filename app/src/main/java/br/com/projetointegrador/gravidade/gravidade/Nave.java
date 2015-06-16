@@ -32,7 +32,7 @@ public class Nave extends PixelPerfectAnimatedSprite {
     }
 
     //não presta, seria pra ver se n passava da tela
-    @Override
+   /* @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
         if (this.mX + this.getWidth() < this.larguraTela ) {
             this.mPhysicsHandler.setVelocityX(this.velocidade);
@@ -40,5 +40,5 @@ public class Nave extends PixelPerfectAnimatedSprite {
             this.mPhysicsHandler.setVelocityX(-this.velocidade);
         }
         super.onManagedUpdate(pSecondsElapsed);
-    }
+    }*/
 }

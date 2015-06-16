@@ -200,7 +200,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.setBackground(new Background(0, 0, 0));
 
         //Criando nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
-        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/4,naveRegiao,this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
+        this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/8,naveRegiao,this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
         scene.attachChild(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela

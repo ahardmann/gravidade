@@ -1,7 +1,6 @@
 package br.com.projetointegrador.gravidade.gravidade;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -45,7 +44,6 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         private Long pontos = 0L;
         private Long recorde = 0L;
         private BitmapTextureAtlas pontuacaoTextureAtlas;
-        private Font pontuacaoFont;
         private Text textoPontuacao;
 
         private Sprite botaoInativoSprite, botaoSairSprite;
@@ -85,7 +83,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
             //FontFactory.setAssetBasePath("font/");
             this.mFontTexture = new BitmapTextureAtlas(mEngine.getTextureManager(), 256, 256);
-            this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 24, true, Color.WHITE_ABGR_PACKED_INT);
+            this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 28, true, Color.WHITE_ABGR_PACKED_INT);
             this.mFont.load();
             this.mEngine.getTextureManager().loadTexture(this.mFontTexture);
             this.mEngine.getFontManager().loadFont(this.mFont);
@@ -96,9 +94,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             this.botaoRegiaoInativo = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texBotaoInativo, this.getAssets(), "gfx/botao_ativo.png", 0, 0, 1, 1);
 
             pontuacaoTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-            this.pontuacaoFont = new Font(this.getFontManager(),pontuacaoTextureAtlas, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 35, true, Color.WHITE);
             this.mEngine.getTextureManager().loadTexture(pontuacaoTextureAtlas);
-            this.mEngine.getFontManager().loadFont(pontuacaoFont);
 
             texBotaoInativo.load();
             backgroundTexture.load();
@@ -149,8 +145,8 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             scene.attachChild(text);
             scene.registerTouchArea(this.botaoInativoSprite);
 
-            Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Sair",this.getVertexBufferObjectManager());
-            this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+            Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Sair",this.getVertexBufferObjectManager());
+            this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 500,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
                 //Cria o touch dentro do botao
                 @Override
@@ -180,10 +176,8 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             scene.registerTouchArea(this.botaoSairSprite);
 
             // Pontos
-            String textoPontos = "Pontuação: " + pontos*5 + " / Recorde: " + recorde * 5;
-            float centroXpontos = (this.CAMERA_WIDTH / 2);
-            float centroYpontos = (this.CAMERA_HEIGHT - 100) - (this.pontuacaoFont.getLineHeight() / 2);
-            textoPontuacao = new Text(centroXpontos, centroYpontos, this.pontuacaoFont, textoPontos, this.getVertexBufferObjectManager());
+            textoPontuacao = new Text(this.CAMERA_WIDTH /2 ,this.CAMERA_HEIGHT - 100, mFont
+                    ,"Pontuação: " + pontos*5 + "\nRecorde: " + recorde *5, this.getVertexBufferObjectManager());
             scene.attachChild(textoPontuacao);
 
             return scene;

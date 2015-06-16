@@ -286,17 +286,17 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-            
+
             if (naveSprite != null){
 
-                float nextX = naveSprite.getX() - (x * 4);
+                float nextX = naveSprite.getX() - (x * 2);
                 //if(naveSprite.getX() > CAMERA_WIDTH - 460 && naveSprite.getX() < CAMERA_WIDTH - 100) {
                 //if(nextX > naveSprite.getWidth()/2 || nextX < CAMERA_WIDTH - naveSprite.getWidth()/2){
 
                 if(naveSprite.getX() < 0) {
                     naveSprite.setX(0);
                 }else if(naveSprite.getX() + naveSprite.getWidth() > CAMERA_WIDTH) {
-                    naveSprite.setX(CAMERA_WIDTH - naveSprite.getWidth());
+                    naveSprite.setX((CAMERA_WIDTH - 5) - naveSprite.getWidth());
                 }else{
                     naveSprite.setX(nextX);
                     Log.i("getX:", String.valueOf(naveSprite.getX()));

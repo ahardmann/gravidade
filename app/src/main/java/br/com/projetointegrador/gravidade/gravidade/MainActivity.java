@@ -49,11 +49,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
     //Imagens
     private Sprite asteroideSprite;
-    private Sprite backgroundSprite;
     private PixelPerfectAnimatedSprite naveSprite;
     private Sprite starSprite;
 
-    private ITextureRegion mBackgroundTextureRegion;
     private PixelPerfectTiledTextureRegion naveRegiao;
     private TiledTextureRegion asteroideRegiao;
     private TiledTextureRegion starRegiao;
@@ -119,7 +117,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     //Carrega os sons do jogo
-    private void loadSounds() {
+   private void loadSounds() {
         try {
             musica = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "sfx/inicio_game.ogg");
             colisaoSom = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "sfx/colisao.ogg");
@@ -134,18 +132,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     private void loadGraphics() throws IOException {
-            // 1 - Set bitmap textures
-           /* ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
-                @Override
-                public InputStream open() throws IOException {
-                    return getAssets().open("gfx/newbackground.png");
-                }
-            });*/
-
-            //this.mBackgroundTextureRegion = TextureRegionFactory.extractFromTexture(backgroundTexture, 0, 0, 400, 900);
-
-
-
             //seta asteroide
             texAsteroide = new BitmapTextureAtlas(this.getTextureManager(), 36, 36, TextureOptions.DEFAULT);
             this.asteroideRegiao = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(texAsteroide, this.getAssets(), "gfx/asteroide.png", 0, 0, 1, 1);
@@ -167,14 +153,21 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             texStar.load();
             texAsteroide.load();
             texNave.load();
-            //backgroundTexture.load();
     }
 
     @Override
     protected void onCreateResources() throws IOException {
         loadGraphics();
+
         //loadFonts();
         loadSounds();
+    }
+
+    private void pauseMusic(){
+        musica.pause();
+        musica.setLooping(false);
+        musica.setVolume(0);
+        musica.setVolume(0);
     }
 
     private void startMusic() {
@@ -191,12 +184,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         startMusic();
 
         //criando o background
-        //this.backgroundSprite = new Sprite(CAMERA_WIDTH / 2, CAMERA_HEIGHT / 2, this.mBackgroundTextureRegion, this.getVertexBufferObjectManager());
-        //backgroundSprite.setWidth(CAMERA_WIDTH);
-        //backgroundSprite.setHeight(CAMERA_HEIGHT);
-        //scene.attachChild(this.backgroundSprite);
-        //scene.registerTouchArea(this.backgroundSprite);
-
         scene.setBackground(new Background(0, 0, 0));
 
         //Criando nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
@@ -248,6 +235,22 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
         switch (dificuldade){
             case 50:
+                for(i = 0; i < 2; i++){
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                    scene.attachChild(this.asteroideSprite);
+                    Log.i(LOGS, "Gerou 2");
+                }
+            break;
+
+            case 200:
+                for(i = 0; i < 4; i++){
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                    scene.attachChild(this.asteroideSprite);
+                    Log.i(LOGS, "Gerou 4");
+                }
+            break;
+
+            case 400:
                 for(i = 0; i < 6; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
@@ -255,27 +258,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 }
             break;
 
-            case 200:
+            case 800:
                 for(i = 0; i < 8; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
                     Log.i(LOGS, "Gerou 8");
-                }
-            break;
-
-            case 400:
-                for(i = 0; i < 10; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
-                    scene.attachChild(this.asteroideSprite);
-                    Log.i(LOGS, "Gerou 10");
-                }
-            break;
-
-            case 800:
-                for(i = 0; i < 12; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager(),this.naveSprite,this);
-                    scene.attachChild(this.asteroideSprite);
-                    Log.i(LOGS, "Gerou 12");
                 }
             break;
         }
@@ -290,8 +277,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             if (naveSprite != null){
 
                 float nextX = naveSprite.getX() - (x * 2);
-                //if(naveSprite.getX() > CAMERA_WIDTH - 460 && naveSprite.getX() < CAMERA_WIDTH - 100) {
-                //if(nextX > naveSprite.getWidth()/2 || nextX < CAMERA_WIDTH - naveSprite.getWidth()/2){
 
                 if(naveSprite.getX() < 0) {
                     naveSprite.setX(0);

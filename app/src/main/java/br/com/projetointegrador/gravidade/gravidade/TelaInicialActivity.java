@@ -3,6 +3,10 @@ package br.com.projetointegrador.gravidade.gravidade;
 import android.content.Intent;
 import android.util.Log;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.sound.Sound;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -33,16 +37,16 @@ import java.io.InputStream;
 public class TelaInicialActivity extends SimpleBaseGameActivity {
     public static int CAMERA_WIDTH = 480;
     public static int CAMERA_HEIGHT = 800;
+    public Text textsound;
     private Scene scene = new Scene();
     private Scene mSceneSobre = new Scene();
     private Camera camera;
-    private Sprite inicialSprite, logoSprite, botaoSairSprite, botaoInativoSprite, botaoConfgSprite, botaoVoltarSprite;
+    private Sprite inicialSprite, logoSprite, botaoSairSprite, botaoInativoSprite, botaoConfgSprite, botaoVoltarSprite,botaoSoundSprite;
     private ITextureRegion inicialTextureRegion;
-    private BitmapTextureAtlas texBotaoInativo, texBotaoAtivo, texLogo, mFontTexture;
+    private BitmapTextureAtlas texBotaoInativo, texLogo, mFontTexture;
     private TiledTextureRegion botaoRegiaoInativo, logoRegiao;
     private float mDowX, mDowY;
     private Font mFont;
-
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -162,8 +166,40 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         scene.attachChild(textconfg);
         scene.registerTouchArea(this.botaoConfgSprite);
 
-        Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Sair",this.getVertexBufferObjectManager());
-        this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+        textsound = new Text(CAMERA_WIDTH/2,CAMERA_HEIGHT - 600, mFont, "Musica | On", getVertexBufferObjectManager());
+        this.botaoSoundSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                int eventAction = pSceneTouchEvent.getAction();
+                float X = pSceneTouchEvent.getX();
+                float Y = pSceneTouchEvent.getY();
+
+                switch (eventAction) {
+                    case TouchEvent.ACTION_DOWN:
+                        Log.e("Fudeu",X+""+Y);
+                        mDowX = X;
+                        mDowY = Y;
+                        break;
+                    case TouchEvent.ACTION_MOVE:
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        Log.e("Fudeu","UP "+X+""+Y);
+                        if (!(textsound.getText().equals("Musica | On"))){
+                            textsound.setText("Musica | On");
+                        } else {
+                            textsound.setText("Musica | Off");
+                        }
+                        break;
+                }
+                return true;
+            }
+        };
+        scene.attachChild(this.botaoSoundSprite);
+        scene.attachChild(textsound);
+        scene.registerTouchArea(this.botaoSoundSprite);
+
+        Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 700 ,mFont,"Sair",this.getVertexBufferObjectManager());
+        this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 700,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
             //Cria o touch dentro do botao
             @Override

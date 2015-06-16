@@ -46,7 +46,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         private BitmapTextureAtlas pontuacaoTextureAtlas;
         private Text textoPontuacao;
 
-        private Sprite botaoInativoSprite, botaoSairSprite;
+        private Sprite botaoInativoSprite, botaoSairSprite, botaoMenuSprite;
         private BitmapTextureAtlas texBotaoInativo, mFontTexture;
         private TiledTextureRegion botaoRegiaoInativo;
         private float mDowX, mDowY;
@@ -145,8 +145,38 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             scene.attachChild(text);
             scene.registerTouchArea(this.botaoInativoSprite);
 
-            Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Sair",this.getVertexBufferObjectManager());
-            this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 500,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+            Text textmenu = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Menu",this.getVertexBufferObjectManager());
+            this.botaoMenuSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 500,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
+
+                //Cria o touch dentro do botao
+                @Override
+                public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                    int eventAction = pSceneTouchEvent.getAction();
+                    float X = pSceneTouchEvent.getX();
+                    float Y = pSceneTouchEvent.getY();
+
+                    switch (eventAction) {
+                        case TouchEvent.ACTION_DOWN:
+                            Log.e("Fudeu",X+""+Y);
+                            mDowX = X;
+                            mDowY = Y;
+                            break;
+                        case TouchEvent.ACTION_MOVE:
+                            break;
+                        case TouchEvent.ACTION_UP:
+                            Log.e("Fudeu","UP "+X+""+Y);
+                            Menu();
+                            break;
+                    }
+                    return true;
+                }
+            };
+            scene.attachChild(this.botaoMenuSprite);
+            scene.attachChild(textmenu);
+            scene.registerTouchArea(this.botaoMenuSprite);
+
+            Text textsair = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Sair",this.getVertexBufferObjectManager());
+            this.botaoSairSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 600,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
                 //Cria o touch dentro do botao
                 @Override
@@ -186,6 +216,12 @@ public class GameOverActivity extends SimpleBaseGameActivity{
     private void restartMainActivity(){
         Intent playGame = new Intent(this, MainActivity.class);
         startActivity(playGame);
+        this.finish();
+    }
+
+    private void Menu(){
+        Intent menu = new Intent(this, TelaInicialActivity.class);
+        startActivity(menu);
         this.finish();
     }
  }

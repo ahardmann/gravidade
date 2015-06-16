@@ -31,6 +31,7 @@ import org.andengine.util.adt.io.in.IInputStreamOpener;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 public class GameOverActivity extends SimpleBaseGameActivity{
         public static int CAMERA_WIDTH  = 480;
         public static int CAMERA_HEIGHT = 800;
@@ -65,6 +66,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
         @Override
         public EngineOptions onCreateEngineOptions() {
+
             camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
             EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
             engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
@@ -178,7 +180,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             scene.registerTouchArea(this.botaoSairSprite);
 
             // Pontos
-            String textoPontos = "Pontuação: " + pontos + " / Recorde: " + recorde;
+            String textoPontos = "Pontuação: " + pontos*5 + " / Recorde: " + recorde * 5;
             float centroXpontos = (this.CAMERA_WIDTH / 2);
             float centroYpontos = (this.CAMERA_HEIGHT - 100) - (this.pontuacaoFont.getLineHeight() / 2);
             textoPontuacao = new Text(centroXpontos, centroYpontos, this.pontuacaoFont, textoPontos, this.getVertexBufferObjectManager());

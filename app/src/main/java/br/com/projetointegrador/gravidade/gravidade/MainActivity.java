@@ -226,9 +226,10 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     public void gameOver() {
         colisaoSom.play();
         Bundle bundle = new Bundle();
-        bundle.putLong("pontos", pontos);
-        bundle.putLong("recorde", recorde);
+        bundle.putLong("pontos", Long.valueOf(pontos));
+        bundle.putLong("recorde", Long.valueOf(recorde));
         Intent intent = new Intent(this,GameOverActivity.class);
+        intent.putExtras(bundle);
         this.startActivity(intent);
         this.finish();
     }

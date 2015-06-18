@@ -47,8 +47,6 @@ import DB.ScoreSqlite;
 
 public class MainActivity extends SimpleBaseGameActivity implements SensorEventListener {
     //Engine
-    public static int CAMERA_WIDTH  = 480;
-    public static int CAMERA_HEIGHT = 800;
     private Scene scene = new Scene();
     private Camera camera;
 
@@ -103,7 +101,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
             width = d.getWidth();
             height = d.getHeight();
         }
-
     }
 
     //Método necessário para utilização do sensor
@@ -142,7 +139,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
         //Captura Tamalho da tela
         camera = new Camera(0 , 0,width, height);
-
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
 
         engineOptions.getAudioOptions().setNeedsMusic(true);
@@ -161,10 +157,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void loadFonts(){
-
     }
 
     private void loadGraphics() throws IOException {
@@ -194,7 +186,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     @Override
     protected void onCreateResources() throws IOException {
         loadGraphics();
-        //loadFonts();
         loadSounds();
     }
 
@@ -258,7 +249,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     public void atualizaPontuacao(){
-        //final  String LOGS = "logs";
         this.pontos++;
         if(this.pontos > this.recorde){
             this.recorde = this.pontos;
@@ -274,7 +264,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 for(i = 0; i < 3; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 550f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    //Log.i(LOGS, "Gerou 2");
                 }
                 break;
 
@@ -282,7 +271,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 for(i = 0; i < 6; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 650f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    //Log.i(LOGS, "Gerou 4");
                 }
                 break;
 
@@ -290,7 +278,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 for(i = 0; i < 8; i++) {
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 750f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    //Log.i(LOGS, "Gerou 6");
                 }
                 break;
 
@@ -298,7 +285,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 for(i = 0; i < 10; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 800f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    //Log.i(LOGS, "Gerou 8");
                 }
                 break;
 
@@ -306,7 +292,6 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 for(i = 0; i < 13; i++){
                     this.asteroideSprite = new Asteroide(this.asteroideRegiao, 1050f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    //Log.i(LOGS, "Gerou 13");
                 }
                 break;
         }
@@ -314,28 +299,14 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = event.values[0];
-
             if (naveSprite != null){
-
                 float nextX = naveSprite.getX() - (x * 2);
                 float halfnave = naveSprite.getWidth()/2;
-
                 if(nextX > halfnave && nextX < width - halfnave){
                     naveSprite.setX(nextX);
-                    //Log.i("getX:", String.valueOf(naveSprite.getX()));
                 }
-
-               /* if(naveSprite.getX() < 0) {
-                    naveSprite.setX(0);
-                }else if(naveSprite.getX() + naveSprite.getWidth() > CAMERA_WIDTH) {
-                    naveSprite.setX((CAMERA_WIDTH - 5) - naveSprite.getWidth());
-                }else{
-                    naveSprite.setX(nextX);
-                    Log.i("getX:", String.valueOf(naveSprite.getX()));
-                }*/
             }
         }
     }

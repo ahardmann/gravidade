@@ -1,7 +1,5 @@
 package br.com.projetointegrador.gravidade.gravidade;
 
-import android.util.Log;
-
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.collisions.entity.sprite.PixelPerfectAnimatedSprite;
@@ -60,7 +58,6 @@ public class Asteroide extends AnimatedSprite {
     //Método de loop dos asteroids
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
-        final  String LOGS = "logs";
         //mY = posição Y
         if(this.mY < 0) {
             this.setPosition(getPosicaoInicial(), pAlturaTela);
@@ -68,12 +65,10 @@ public class Asteroide extends AnimatedSprite {
             this.activity.atualizaPontuacao();
         }
 
-        //verifica se ocorreu a colisão no metodo onManagedUpdate,
-        // caso o asteroide bater na nave vamos pegar a Activity e parar a aplicação.
+        //verifica se ocorreu a colisão no metodo onManagedUpdate, caso o asteroide bater na nave vamos pegar a Activity e parar a aplicação.
         if(this.collidesWith(this.nave)){
             //chama o game over atraves do metodo do main activity(não esquecer de criar o activity no AndroidManifest.xml)
             this.activity.gameOver();
-            //Log.i(LOGS, "Colisão");
         }
         super.onManagedUpdate(pSecondsElapsed);
     }

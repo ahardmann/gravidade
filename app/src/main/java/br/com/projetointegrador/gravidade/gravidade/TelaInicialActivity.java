@@ -116,14 +116,12 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
                 switch (eventAction) {
                     case TouchEvent.ACTION_DOWN:
-                        Log.e("Fudeu",X+""+Y);
                         mDowX = X;
                         mDowY = Y;
                         break;
                     case TouchEvent.ACTION_MOVE:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.e("Fudeu","UP "+X+""+Y);
                         startMainActivity();
                         break;
                 }
@@ -147,14 +145,12 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
                 switch (eventAction) {
                     case TouchEvent.ACTION_DOWN:
-                        Log.e("Fudeu",X+""+Y);
                         mDowX = X;
                         mDowY = Y;
                         break;
                     case TouchEvent.ACTION_MOVE:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.e("Fudeu","UP "+X+""+Y);
                         createSobre();
                         mEngine.setScene(mSceneSobre);
                         break;
@@ -176,14 +172,12 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
                 switch (eventAction) {
                     case TouchEvent.ACTION_DOWN:
-                        Log.e("Fudeu",X+""+Y);
                         mDowX = X;
                         mDowY = Y;
                         break;
                     case TouchEvent.ACTION_MOVE:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.e("Fudeu","UP "+X+""+Y);
                         if (!(textsound.getText().equals("Musica | On"))){
                             textsound.setText("Musica | On");
                         } else {
@@ -241,7 +235,7 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         mSceneSobre.attachChild(this.logoSprite);
 
         Text textCriado = new Text(CAMERA_WIDTH /2, CAMERA_HEIGHT - 200, mFont, "Desenvolvido por:\n\t Arthur Hardmann \n\t " +
-               " https://github.com/ahardmann \n\t" + "Marcus Vinicius \n\t  https://github.com/mvfsilva" ,getVertexBufferObjectManager());
+               " https://github.com/ahardmann \n\t" + "Marcus Silva \n\t  https://github.com/mvfsilva" ,getVertexBufferObjectManager());
         mSceneSobre.attachChild(textCriado);
 
         Text textvoltar = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 600 ,mFont,"Voltar",this.getVertexBufferObjectManager());

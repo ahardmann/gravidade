@@ -46,10 +46,15 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         private BitmapTextureAtlas pontuacaoTextureAtlas;
         private Text textoPontuacao;
 
-        private Sprite botaoInativoSprite, botaoSairSprite, botaoMenuSprite;
-        private BitmapTextureAtlas texBotaoInativo, mFontTexture;
+        private Sprite botaoInativoSprite;
+        private Sprite botaoSairSprite;
+        private Sprite botaoMenuSprite;
+
+        private BitmapTextureAtlas texBotaoInativo;
+        private BitmapTextureAtlas mFontTexture;
         private TiledTextureRegion botaoRegiaoInativo;
-        private float mDowX, mDowY;
+        private float mDowX;
+        private float mDowY;
         private Font mFont;
 
         @Override
@@ -64,14 +69,11 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
         @Override
         public EngineOptions onCreateEngineOptions() {
-
             camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
             EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
             engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
             return engineOptions;
         }
-
-
 
         private void loadGraphics() throws IOException {
             ITexture backgroundTexture = new BitmapTexture(this.getTextureManager(), new IInputStreamOpener() {
@@ -100,13 +102,10 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             backgroundTexture.load();
         }
 
-
-
         @Override
         protected void onCreateResources() throws IOException {
             loadGraphics();
         }
-
 
         @Override
         protected Scene onCreateScene() {
@@ -127,14 +126,12 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
                     switch (eventAction) {
                         case TouchEvent.ACTION_DOWN:
-                            Log.e("Fudeu", X + "" + Y);
                             mDowX = X;
                             mDowY = Y;
                             break;
                         case TouchEvent.ACTION_MOVE:
                             break;
                         case TouchEvent.ACTION_UP:
-                            Log.e("Fudeu","UP "+X+""+Y);
                             restartMainActivity();
                             break;
                     }
@@ -145,7 +142,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
             scene.attachChild(text);
             scene.registerTouchArea(this.botaoInativoSprite);
 
-            Text textmenu = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500 ,mFont,"Menu",this.getVertexBufferObjectManager());
+            Text textmenu = new Text(this.CAMERA_WIDTH/2, this.CAMERA_HEIGHT - 500, mFont, "Menu", this.getVertexBufferObjectManager());
             this.botaoMenuSprite = new Sprite(this.CAMERA_WIDTH/2,this.CAMERA_HEIGHT - 500,this.botaoRegiaoInativo,this.getVertexBufferObjectManager()){
 
                 //Cria o touch dentro do botao
@@ -157,14 +154,12 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
                     switch (eventAction) {
                         case TouchEvent.ACTION_DOWN:
-                            //Log.e("Fudeu",X+""+Y);
                             mDowX = X;
                             mDowY = Y;
                             break;
                         case TouchEvent.ACTION_MOVE:
                             break;
                         case TouchEvent.ACTION_UP:
-                           // Log.e("Fudeu","UP "+X+""+Y);
                             Menu();
                             break;
                     }
@@ -187,27 +182,25 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
                     switch (eventAction) {
                         case TouchEvent.ACTION_DOWN:
-                            //Log.e("Fudeu",X+""+Y);
                             mDowX = X;
                             mDowY = Y;
                             break;
                         case TouchEvent.ACTION_MOVE:
                             break;
                         case TouchEvent.ACTION_UP:
-                            //Log.e("Fudeu", "UP " + X + "" + Y);
                             System.exit(0);
                             break;
                     }
                     return true;
                 }
             };
+
             scene.attachChild(this.botaoSairSprite);
             scene.attachChild(textsair);
             scene.registerTouchArea(this.botaoSairSprite);
 
             // Pontos
-            textoPontuacao = new Text(this.CAMERA_WIDTH /2 ,this.CAMERA_HEIGHT - 100, mFont
-                    ,"Pontuação: " + pontos*5 + "\nRecorde: " + recorde *5, this.getVertexBufferObjectManager());
+            textoPontuacao = new Text(this.CAMERA_WIDTH /2 ,this.CAMERA_HEIGHT - 100, mFont,"Pontuação: " + pontos*5 + "\nRecorde: " + recorde *5, this.getVertexBufferObjectManager());
             scene.attachChild(textoPontuacao);
 
             return scene;

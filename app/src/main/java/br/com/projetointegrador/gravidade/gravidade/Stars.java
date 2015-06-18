@@ -38,7 +38,6 @@ public class Stars extends AnimatedSprite {
 
     public float getPosicaoInicial(){
         return this.random.nextFloat() * pLarguraTela;
-        //return MainActivity.CAMERA_WIDTH /2 * MainActivity.CAMERA_WIDTH;
     }
 
     public float getVelocidadeY(float velocidade) {
@@ -47,7 +46,6 @@ public class Stars extends AnimatedSprite {
 
     @Override
     protected void onManagedUpdate(float pSecondsElapsed) {
-        final  String LOGS = "logs";
         //mY = posição Y
         if(this.mY < 0) {
             this.setPosition(getPosicaoInicial(), pAlturaTela);

@@ -9,7 +9,7 @@ public class Nave extends PixelPerfectAnimatedSprite {
 
     private PhysicsHandler mPhysicsHandler;
     private float oringemX, origemY;
-    private int velocidade = 100;
+    private int velocidade = 150;
     private int larguraTela;
     private int alturaTela;
 
@@ -30,15 +30,4 @@ public class Nave extends PixelPerfectAnimatedSprite {
     public PhysicsHandler getPhysicsHandler(){
         return mPhysicsHandler;
     }
-
-    //não presta, seria pra ver se n passava da tela
-   /* @Override
-    protected void onManagedUpdate(float pSecondsElapsed) {
-        if (this.mX + this.getWidth() < this.larguraTela ) {
-            this.mPhysicsHandler.setVelocityX(this.velocidade);
-        } else if (this.mX + this.getWidth() > this.larguraTela) {
-            this.mPhysicsHandler.setVelocityX(-this.velocidade);
-        }
-        super.onManagedUpdate(pSecondsElapsed);
-    }*/
 }

@@ -24,10 +24,9 @@ public class Asteroide extends AnimatedSprite {
     private PixelPerfectAnimatedSprite nave;
     private MainActivity activity;
 
-
     //Método construtor Asteroide
-    public Asteroide(TiledTextureRegion pTiledTextureRegion, float pVelocidade, int largura, int altura
-            , final VertexBufferObjectManager pVertexBufferObjectManager, PixelPerfectAnimatedSprite pNave,MainActivity pActivity) {
+    public Asteroide(TiledTextureRegion pTiledTextureRegion, float pVelocidade, int largura, int altura, final VertexBufferObjectManager pVertexBufferObjectManager
+            , PixelPerfectAnimatedSprite pNave,MainActivity pActivity) {
         super(largura * random.nextFloat(), altura, pTiledTextureRegion, pVertexBufferObjectManager, DrawType.STATIC);
 
         this.physicsHandler = new PhysicsHandler(this);

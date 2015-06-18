@@ -11,7 +11,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -19,23 +18,28 @@ import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
+
 import org.andengine.engine.camera.Camera;
+
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+
 import org.andengine.extension.collisions.entity.sprite.PixelPerfectAnimatedSprite;
 import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTextureRegionFactory;
 import org.andengine.extension.collisions.opengl.texture.region.PixelPerfectTiledTextureRegion;
+
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
+
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.color.Color;
@@ -151,7 +155,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     //Carrega os sons do jogo
     private void loadSounds() {
         try {
-            musica = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "sfx/inicio_game.ogg");
+            musica     = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "sfx/inicio_game.ogg");
             colisaoSom = SoundFactory.createSoundFromAsset(mEngine.getSoundManager(), this, "sfx/colisao.ogg");
         }
         catch (IOException e) {
@@ -214,13 +218,11 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
         //Criando nave, width/2 meio do eixo horizontal, heigth/4 posiçao no eixo vertical
         this.naveSprite = new Nave(width/2,height/8,naveRegiao,this.width, this.height, this.getVertexBufferObjectManager());
-        //this.naveSprite = new Nave(CAMERA_WIDTH/2,CAMERA_HEIGHT/8,naveRegiao,this.CAMERA_HEIGHT, this.CAMERA_WIDTH, this.getVertexBufferObjectManager());
         scene.attachChild(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
         for(int i = 0; i < 10 ; i++) {
-            //this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,CAMERA_WIDTH, CAMERA_HEIGHT, this.getVertexBufferObjectManager(),this.naveSprite,this);
-            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 450f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 450f, width, height, this.getVertexBufferObjectManager(), this.naveSprite, this);
             scene.attachChild(this.asteroideSprite);
         }
 

@@ -53,7 +53,6 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
         camera = new Camera(0 , 0,CAMERA_WIDTH, CAMERA_HEIGHT);
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.PORTRAIT_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
-
         return engineOptions;
     }
 

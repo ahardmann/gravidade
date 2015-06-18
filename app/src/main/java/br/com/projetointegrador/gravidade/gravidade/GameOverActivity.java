@@ -2,19 +2,21 @@ package br.com.projetointegrador.gravidade.gravidade;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
+
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
+
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -23,13 +25,13 @@ import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 
 public class GameOverActivity extends SimpleBaseGameActivity{
         public static int CAMERA_WIDTH  = 480;
@@ -61,7 +63,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
         protected void onCreate(Bundle pSavedInstanceState) {
             if (this.getIntent() != null && this.getIntent().getExtras() != null) {
                 Bundle bundle = this.getIntent().getExtras();
-                pontos = bundle.getLong("pontos");
+                pontos  = bundle.getLong("pontos");
                 recorde = bundle.getLong("recorde");
             }
             super.onCreate(pSavedInstanceState);
@@ -83,7 +85,6 @@ public class GameOverActivity extends SimpleBaseGameActivity{
                 }
             });
 
-            //FontFactory.setAssetBasePath("font/");
             this.mFontTexture = new BitmapTextureAtlas(mEngine.getTextureManager(), 256, 256);
             this.mFont = FontFactory.createFromAsset(this.getFontManager(), mFontTexture, this.getAssets(), "font/aspace.ttf", 28, true, Color.WHITE_ABGR_PACKED_INT);
             this.mFont.load();
@@ -166,6 +167,7 @@ public class GameOverActivity extends SimpleBaseGameActivity{
                     return true;
                 }
             };
+
             scene.attachChild(this.botaoMenuSprite);
             scene.attachChild(textmenu);
             scene.registerTouchArea(this.botaoMenuSprite);

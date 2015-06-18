@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class Stars extends AnimatedSprite {
     private static Random random = new Random();
-    private static float velocidadeMin = 50;
+    private static float velocidadeMin = 80;
 
     private PhysicsHandler physicsHandler;
 

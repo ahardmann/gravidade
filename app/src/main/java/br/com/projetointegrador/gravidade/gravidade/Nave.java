@@ -8,23 +8,27 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 public class Nave extends PixelPerfectAnimatedSprite {
 
     private PhysicsHandler mPhysicsHandler;
-    private float oringemX, origemY;
+    private float oringemX;
+    private float origemY;
+
     private int velocidade = 150;
+
     private int larguraTela;
     private int alturaTela;
 
-    public Nave(float pX, float pY,PixelPerfectTiledTextureRegion pTiledTextureRegion,int plarguraTela,int palturaTela
-            , final VertexBufferObjectManager pVertexBufferObjectManager) {
+    public Nave(float pX, float pY,PixelPerfectTiledTextureRegion pTiledTextureRegion, int plarguraTela, int palturaTela, final VertexBufferObjectManager pVertexBufferObjectManager) {
         super(pX, pY, pTiledTextureRegion,pVertexBufferObjectManager);
 
         mPhysicsHandler = new PhysicsHandler(this);
         this.registerUpdateHandler(mPhysicsHandler);
 
         this.velocidade = 100;
+
         this.origemY  = pY;
         this.oringemX = pX;
+
         this.larguraTela = plarguraTela;
-        this.alturaTela = palturaTela;
+        this.alturaTela  = palturaTela;
     }
 
     public PhysicsHandler getPhysicsHandler(){

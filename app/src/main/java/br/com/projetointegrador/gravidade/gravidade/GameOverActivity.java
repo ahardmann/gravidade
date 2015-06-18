@@ -157,14 +157,14 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
                     switch (eventAction) {
                         case TouchEvent.ACTION_DOWN:
-                            Log.e("Fudeu",X+""+Y);
+                            //Log.e("Fudeu",X+""+Y);
                             mDowX = X;
                             mDowY = Y;
                             break;
                         case TouchEvent.ACTION_MOVE:
                             break;
                         case TouchEvent.ACTION_UP:
-                            Log.e("Fudeu","UP "+X+""+Y);
+                           // Log.e("Fudeu","UP "+X+""+Y);
                             Menu();
                             break;
                     }
@@ -187,15 +187,15 @@ public class GameOverActivity extends SimpleBaseGameActivity{
 
                     switch (eventAction) {
                         case TouchEvent.ACTION_DOWN:
-                            Log.e("Fudeu",X+""+Y);
+                            //Log.e("Fudeu",X+""+Y);
                             mDowX = X;
                             mDowY = Y;
                             break;
                         case TouchEvent.ACTION_MOVE:
                             break;
                         case TouchEvent.ACTION_UP:
-                            Log.e("Fudeu","UP "+X+""+Y);
-                            finish();
+                            //Log.e("Fudeu", "UP " + X + "" + Y);
+                            System.exit(0);
                             break;
                     }
                     return true;

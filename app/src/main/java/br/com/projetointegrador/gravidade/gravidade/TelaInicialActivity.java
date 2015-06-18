@@ -210,15 +210,13 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
                 switch (eventAction) {
                     case TouchEvent.ACTION_DOWN:
-                        Log.e("Fudeu",X+""+Y);
                         mDowX = X;
                         mDowY = Y;
                         break;
                     case TouchEvent.ACTION_MOVE:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.e("Fudeu","UP "+X+""+Y);
-                        finish();
+                        System.exit(0);
                         break;
                 }
                 return true;
@@ -258,14 +256,12 @@ public class TelaInicialActivity extends SimpleBaseGameActivity {
 
                 switch (eventAction) {
                     case TouchEvent.ACTION_DOWN:
-                        Log.e("Fudeu",X+""+Y);
                         mDowX = X;
                         mDowY = Y;
                         break;
                     case TouchEvent.ACTION_MOVE:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.e("Fudeu","UP "+X+""+Y);
                         onCreateScene();
                         mEngine.setScene(scene);
                         break;

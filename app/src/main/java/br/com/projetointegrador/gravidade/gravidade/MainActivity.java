@@ -227,14 +227,14 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
         scene.attachChild(this.naveSprite);
 
         //Laço que gera mais de um asteroide na tela
-        for(int i = 0; i < 5 ; i++) {
+        for(int i = 0; i < 10 ; i++) {
             //this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,CAMERA_WIDTH, CAMERA_HEIGHT, this.getVertexBufferObjectManager(),this.naveSprite,this);
-            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+            this.asteroideSprite = new Asteroide(this.asteroideRegiao, 450f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
             scene.attachChild(this.asteroideSprite);
         }
 
         for(int x = 0; x < 60; x++){
-            this.starSprite = new Stars(this.starRegiao, 300f,width ,height, this.getVertexBufferObjectManager());
+            this.starSprite = new Stars(this.starRegiao, 500f,width ,height, this.getVertexBufferObjectManager());
             scene.attachChild(this.starSprite);
         }
         //Pontos
@@ -258,7 +258,7 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
     }
 
     public void atualizaPontuacao(){
-        final  String LOGS = "logs";
+        //final  String LOGS = "logs";
         this.pontos++;
         if(this.pontos > this.recorde){
             this.recorde = this.pontos;
@@ -271,34 +271,42 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
 
         switch (dificuldade){
             case 50:
-                for(i = 0; i < 2; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                for(i = 0; i < 3; i++){
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 550f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    Log.i(LOGS, "Gerou 2");
+                    //Log.i(LOGS, "Gerou 2");
                 }
                 break;
 
             case 200:
-                for(i = 0; i < 4; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                for(i = 0; i < 6; i++){
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 650f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    Log.i(LOGS, "Gerou 4");
+                    //Log.i(LOGS, "Gerou 4");
                 }
                 break;
 
             case 400:
-                for(i = 0; i < 6; i++) {
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                for(i = 0; i < 8; i++) {
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 750f,width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    Log.i(LOGS, "Gerou 6");
+                    //Log.i(LOGS, "Gerou 6");
                 }
                 break;
 
             case 800:
-                for(i = 0; i < 8; i++){
-                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 150f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                for(i = 0; i < 10; i++){
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 800f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
                     scene.attachChild(this.asteroideSprite);
-                    Log.i(LOGS, "Gerou 8");
+                    //Log.i(LOGS, "Gerou 8");
+                }
+                break;
+
+            case 1000:
+                for(i = 0; i < 13; i++){
+                    this.asteroideSprite = new Asteroide(this.asteroideRegiao, 1050f, width, height, this.getVertexBufferObjectManager(),this.naveSprite,this);
+                    scene.attachChild(this.asteroideSprite);
+                    //Log.i(LOGS, "Gerou 13");
                 }
                 break;
         }
@@ -315,9 +323,9 @@ public class MainActivity extends SimpleBaseGameActivity implements SensorEventL
                 float nextX = naveSprite.getX() - (x * 2);
                 float halfnave = naveSprite.getWidth()/2;
 
-                if( nextX>halfnave && nextX < width -halfnave  ){
+                if(nextX > halfnave && nextX < width - halfnave){
                     naveSprite.setX(nextX);
-                    Log.i("getX:", String.valueOf(naveSprite.getX()));
+                    //Log.i("getX:", String.valueOf(naveSprite.getX()));
                 }
 
                /* if(naveSprite.getX() < 0) {

@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Asteroide extends AnimatedSprite {
     private static Random random = new Random();
-    private static float velocidadeMin = 50;
+    private static float velocidadeMin = 150f;
 
     private PhysicsHandler physicsHandler;
 
@@ -73,7 +73,7 @@ public class Asteroide extends AnimatedSprite {
         if(this.collidesWith(this.nave)){
             //chama o game over atraves do metodo do main activity(não esquecer de criar o activity no AndroidManifest.xml)
             this.activity.gameOver();
-            Log.i(LOGS, "Colisão");
+            //Log.i(LOGS, "Colisão");
         }
         super.onManagedUpdate(pSecondsElapsed);
     }
